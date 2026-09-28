@@ -1,0 +1,26 @@
+# Forgejo for aiai pro, from the official Docker guide. The web port is
+# bound to 127.0.0.1 and published by Caddy as git.example.jp; SSH is
+# published on 222. Data is owned by USER_UID/USER_GID.
+# Sample only: has not been run yet (2026-09-28).
+
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:16
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__service__DISABLE_REGISTRATION=true
+      # To use the PostgreSQL of dodai/ instead of SQLite:
+      # - FORGEJO__database__DB_TYPE=postgres
+      # - FORGEJO__database__HOST=127.0.0.1:5432
+      # - FORGEJO__database__NAME=forgejo
+      # - FORGEJO__database__USER=forgejo
+      # - FORGEJO__database__PASSWD=${FORGEJO_DB_PASSWORD}
+    restart: always
+    volumes:
+      - ./forgejo:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "127.0.0.1:3000:3000"
+      - "222:22"

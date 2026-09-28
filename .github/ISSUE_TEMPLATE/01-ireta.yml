@@ -1,0 +1,58 @@
+name: 入れて分かったこと
+description: スキルで道具を入れて分かったこと(動いた所、止まった所、直した設定)を知らせる
+title: "[入れた] "
+labels: ["入れた記録"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ここに報告するのは、公開されている内容だけです。報告は公開されます。
+        会社の名前、ドメイン、IP アドレス、社員のメールアドレスは書かないでください。
+        `.env` の中身、パスワード、鍵、トークンは書かないでください。`docker compose config` の出力にはそれらが入るので貼らないでください。
+        設定を貼るときは、会社の名前と番号を example.jp と 127.0.0.1 に戻してください。
+  - type: dropdown
+    id: folder
+    attributes:
+      label: フォルダー
+      options:
+        - server(サーバー、Docker、Caddy)
+        - dodai(データの土台)
+        - ninshou(認証、PocketBase)
+        - code(Forgejo)
+        - bunsho(OnlyOffice Docs)
+        - mail(Stalwart)
+        - kaigi(Jitsi、Cal.diy、BigBlueButton、Radicale)
+        - web(Cloudflare Pages)
+        - api(FastAPI)
+        - jouhou(社内情報を整える)
+        - ai(Ollama、AnythingLLM、RAG)
+        - bunseki(データ分析)
+        - erpnext(ERPNext)
+        - README(順番、使う物の表)
+    validations:
+      required: true
+  - type: input
+    id: mono
+    attributes:
+      label: 入れた物と版
+      placeholder: 例 Stalwart v0.16.24、Docker 29.x、Caddy v2.11.4、Ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: ugoita
+    attributes:
+      label: 動いた所
+  - type: textarea
+    id: tomatta
+    attributes:
+      label: 止まった所(何をして、何が出たか)
+  - type: textarea
+    id: naoshita
+    attributes:
+      label: 直した手順や設定(会社の名前と番号は example.jp と 127.0.0.1 に戻して)
+      render: markdown
+  - type: textarea
+    id: han
+    attributes:
+      label: 版の一覧(lsb_release -ds、docker --version、docker compose version、caddy version、docker compose images の出力)
+      render: shell

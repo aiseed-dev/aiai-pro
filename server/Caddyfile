@@ -1,0 +1,24 @@
+# Reverse proxy for the tools of aiai pro. One name per tool; each points at
+# a container that listens on 127.0.0.1 only. Caddy takes the certificates
+# for public names by itself. Replace example.jp with the company's domain.
+# Sample only: has not been run yet (2026-09-28).
+
+auth.example.jp {
+	reverse_proxy 127.0.0.1:8090
+}
+
+git.example.jp {
+	reverse_proxy 127.0.0.1:3000
+}
+
+docs.example.jp {
+	reverse_proxy 127.0.0.1:8081
+}
+
+api.example.jp {
+	reverse_proxy 127.0.0.1:8400
+}
+
+chat.example.jp {
+	reverse_proxy 127.0.0.1:3001
+}

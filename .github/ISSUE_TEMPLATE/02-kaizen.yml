@@ -1,0 +1,20 @@
+name: 改善の提案
+description: 足してほしい道具や手順、手順の直し方
+title: "[提案] "
+labels: ["提案"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ここに報告するのは、公開されている内容だけです。公開されていない資料や情報は書かないでください。
+        氏名・住所などは書かないでください。
+  - type: textarea
+    id: teian
+    attributes:
+      label: 提案
+    validations:
+      required: true
+  - type: textarea
+    id: riyu
+    attributes:
+      label: なぜ要るか(どこで困ったか)

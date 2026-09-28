@@ -1,0 +1,10 @@
+# Secrets and container data stay on the server
+.env
+**/pg_data/
+**/forgejo/
+**/oo_data/
+**/oo_logs/
+# What the scripts write
+__pycache__/
+確認の結果.md
+予測.xlsx

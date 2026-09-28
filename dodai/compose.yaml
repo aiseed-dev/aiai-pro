@@ -1,0 +1,17 @@
+# PostgreSQL with pgvector for aiai pro. The port is bound to 127.0.0.1 so
+# that only this server (Caddy, the containers, the apps) can reach it.
+# Put POSTGRES_PASSWORD in .env; never commit .env.
+# Sample only: has not been run yet (2026-09-28).
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    restart: always
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: app
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data

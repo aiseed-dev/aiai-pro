@@ -1,0 +1,37 @@
+name: 新しい情報
+description: 書いてあることが変わった(版、ライセンス、公式の説明書の場所、料金など)
+title: "[新しい情報] "
+labels: ["新しい情報"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ここに報告するのは、公開されている内容だけです。公開されていない資料や情報は書かないでください。
+        氏名・住所などは書かないでください。報告は公開されます。
+        `python tools/kakunin.py --fetch --out 確認の結果.md` の結果を、そのまま貼ってもかまいません。
+  - type: input
+    id: basho
+    attributes:
+      label: どこに書いてあることか(ファイルの名前)
+      placeholder: 例 mail/SKILL.md の「2. Stalwart を入れます」
+    validations:
+      required: true
+  - type: textarea
+    id: kawatta
+    attributes:
+      label: 何が変わったか(いまの書き方と、新しい情報)
+    validations:
+      required: true
+  - type: textarea
+    id: shutten
+    attributes:
+      label: 新しい情報の出典(資料の名前と URL)
+    validations:
+      required: true
+  - type: input
+    id: hi
+    attributes:
+      label: 確かめた日
+      placeholder: 2026-10-01
+    validations:
+      required: true
