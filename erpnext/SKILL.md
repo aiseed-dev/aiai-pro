@@ -42,16 +42,19 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
    英語の画面でよければ、frappe_docker の `pwd.yml`(`docker compose -f pwd.yml up -d`、
    画像は `frappe/erpnext:v16.36.1`)でも試せます。どちらも試すための物で、パスワードが
    `admin` のままなので、会社のデータは入れません
-3. 会社の環境を作ります。見本は、このフォルダーの [Dockerfile](Dockerfile)、
-   [compose.yaml](compose.yaml)、[.env.example](.env.example) です。スターターから次を変えました
+3. 自分の PC に、一人で使う ERPNext を作ります。まずは一人が、すべての画面と設定を
+   触れる形にします。人を増やすのは、使い方が決まってからです。いまの ERP は、そのまま
+   並べて使い続けます。
+   見本は、このフォルダーの [Dockerfile](Dockerfile)、[compose.yaml](compose.yaml)、
+   [.env.example](.env.example) です。スターターから次を変えました
    * 版を `v16.36.1` に固定しました。スターターは `version-16` で、黙って版が上がります
    * PDF の日本語の書体(Debian の `fonts-noto-cjk`、OFL-1.1、53.9MB)を足しました
-   * 画面の番号を `127.0.0.1` だけに向け、Caddy から `erp.example.jp` で出します
-     ([server の Caddyfile](../server/Caddyfile))
+   * 画面の番号を `127.0.0.1` だけに向けました。同じ PC からだけ開けます
    * パスワードの既定の `admin` をやめ、`.env` に無ければ止まるようにしました
    * v16 の PDF が使う chromium の場所を、frappe_docker の compose.yaml と同じく設定します
    * DB と Redis を、frappe_docker の overrides と同じ `mariadb:11.8`、`redis:8.6-alpine` にしました
 
+   PC には Docker が要ります(Windows と Mac は Docker Desktop、Linux は Docker Engine)。
    入れる前に、スターターの中身を読みます。スターターは、このフォルダーに、確かめた
    コミットで取ります(`.gitignore` に入っていて、このリポジトリには入りません)
 
@@ -64,23 +67,41 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
    何を変えるかを会社の人に伝えます。2026-09-29 に読んだときは、入れたときに言語を ja、
    国を Japan、時刻を Asia/Tokyo、通貨を JPY にし、Company に「課税区分」と
    「インボイス登録番号」、Item に「税区分」の欄を足すだけでした。コミットを変えたら読み直します。
-   読んだら、サーバーで会社の人が動かします(画像は数 GB です)
+   読んだら、会社の人が動かします(画像は数 GB です)。`.env` の `変えてください` は、
+   会社の人が入れます
 
    ```
    cd erpnext
    cp .env.example .env
    docker compose up -d --build
    docker compose logs -f create-site
-   docker compose exec backend bench --site erp.example.jp set-config host_name https://erp.example.jp
    ```
 
-   `.env` の `変えてください` は、会社の人が入れます。最初のサインインの後、Administrator の
-   パスワードを画面で変え、`.env` の `ADMIN_PASSWORD` は消します(サイトを作るときにだけ使います)。
-   バックアップは、frappe_docker の説明書のとおり、日ごとに次を動かし、`sites` の volume を
-   別の場所に写します。戻せることを 1 度は確かめます
+   `http://localhost:8080` を開き、`Administrator` と `.env` の `ADMIN_PASSWORD` で入ると、
+   設定のウィザードが始まります。言語は「日本語」、国は「Japan」にし、会社の名前と、
+   自分の名前、メールアドレス、パスワードを入れます。ウィザードが作るこの利用者には、
+   Administrator などの特別な物を除くすべての役割と、System Manager が付きます
+   (frappe の `setup_wizard.py` の `create_or_update_user`。2026-09-29 に version-16 で
+   確かめました)。これで一人が何でもできます。ふだんはこの利用者で入り、Administrator は
+   使いません。入ったら、`.env` の `ADMIN_PASSWORD` は消します(サイトを作るときにだけ使います)
+
+   止めるときは `docker compose stop`、また使うときは `docker compose start` です。
+   `docker compose down -v` は、データ(volume)ごと消すので使いません。
+   バックアップは、frappe_docker の説明書のとおり、日ごとに次を動かし、できたファイル
+   (`sites/localhost/private/backups/` の中)を PC の外(外付けのディスクなど)に写します。
+   戻せることを 1 度は確かめます
 
    ```
    docker compose exec backend bench --site all backup --with-files
+   docker compose cp backend:/home/frappe/frappe-bench/sites/localhost/private/backups ./backups
+   ```
+
+   人を増やすときや、外から使うときは、サーバーに移します。`.env` の `SITE_NAME` を
+   `erp.example.jp` にしてサイトを作り、バックアップから戻し、
+   [server の Caddyfile](../server/Caddyfile) の `erp.example.jp` から出して、次を動かします
+
+   ```
+   docker compose exec backend bench --site erp.example.jp set-config host_name https://erp.example.jp
    ```
 
 4. 日本語を見直します。本体には ja の翻訳がありません(erpnext/locale と frappe/locale に
@@ -139,6 +160,9 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
   2026-09-29 に、スターターの ja.csv と比べました
 - Debian の fonts-noto-cjk(https://packages.debian.org/bookworm/fonts-noto-cjk)、
   OFL-1.1。公式の画像は Debian bookworm です。2026-09-29 に確かめました
+- frappe の設定のウィザード `setup_wizard.py`
+  (https://github.com/frappe/frappe/blob/version-16/frappe/desk/page/setup_wizard/setup_wizard.py)。
+  最初の利用者に付く役割を、2026-09-29 に読んで確かめました
 - lifegence/frappe_japanese_translations(https://github.com/lifegence/frappe_japanese_translations)
 - 国税庁「インボイス制度の概要」
   (https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/invoice_about.htm)
