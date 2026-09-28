@@ -42,9 +42,7 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
    英語の画面でよければ、frappe_docker の `pwd.yml`(`docker compose -f pwd.yml up -d`、
    画像は `frappe/erpnext:v16.36.1`)でも試せます。どちらも試すための物で、パスワードが
    `admin` のままなので、会社のデータは入れません
-3. 自分の PC に、一人で使う ERPNext を作ります。まずは一人が、すべての画面と設定を
-   触れる形にします。人を増やすのは、使い方が決まってからです。いまの ERP は、そのまま
-   並べて使い続けます。
+3. 自分の PC に、一人で使う ERPNext を作ります。一人が、すべての画面と設定を触れる形です。
    見本は、このフォルダーの [Dockerfile](Dockerfile)、[compose.yaml](compose.yaml)、
    [.env.example](.env.example) です。スターターから次を変えました
    * 版を `v16.36.1` に固定しました。スターターは `version-16` で、黙って版が上がります
