@@ -84,7 +84,8 @@ ERPNext の説明書は「会社の中枢神経で、すべてを 1 か所に集
 - ERPNext の説明書「Introduction」(https://docs.frappe.io/erpnext/user/manual/en/introduction)、
   「Sales Invoice」(https://docs.frappe.io/erpnext/user/manual/en/sales-invoice)。2026-09-29 に読みました
 - frappe/erpnext(https://github.com/frappe/erpnext)、GPL-3.0。画像 `frappe/erpnext:v16.36.1`
-  (https://hub.docker.com/r/frappe/erpnext/tags)
+  (https://hub.docker.com/r/frappe/erpnext/tags)には、ERPNext v16.36.1 と Frappe v16.35.0(MIT)が
+  入っています(画像の由来の記録の `FRAPPE_BRANCH` と `ERPNEXT_BRANCH`)
 - frappe/frappe_docker(https://github.com/frappe/frappe_docker)、MIT。`pwd.yml`
   (https://github.com/frappe/frappe_docker/blob/main/pwd.yml)、overrides の `compose.mariadb.yaml` と
   `compose.redis.yaml`、「Backup Strategy」

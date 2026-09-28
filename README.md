@@ -143,13 +143,17 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | AnythingLLM | v1.16.2 | MIT | https://github.com/Mintplex-Labs/anything-llm/releases |
 | North Mini Code 1.0(Cohere) | 30B(3B が動く)MoE | Apache-2.0 | https://docs.cohere.com/docs/north-mini-code-1.0 |
 | scikit-learn、LightGBM、SHAP | 1.9.1、4.7.0、0.52.0(conda-forge) | BSD-3-Clause、MIT、MIT | https://anaconda.org/conda-forge/ |
-| ERPNext、Frappe Framework | v16.36.1(画像)、v15.121.1 | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
+| ERPNext、Frappe Framework | v16.36.1、v16.35.0(画像 `frappe/erpnext:v16.36.1` に入っている組) | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
 | frappe_docker | v3.2.2 | MIT | https://github.com/frappe/frappe_docker/releases |
 | erpnext-ja-starter(ERPNext の日本語) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
 | MariaDB、Redis(ERPNext の DB とキュー) | 11.8、8.6 | GPL-2.0、AGPL-3.0 を選べる | https://github.com/frappe/frappe_docker/tree/main/overrides |
 | Noto CJK(fonts-noto-cjk、PDF の日本語) | 1:20220127(Debian bookworm) | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
 
 BigBlueButton のライセンスは、リポジトリの LICENSE を GitHub の API で確かめました。
+
+ERPNext の画像に入っている Frappe の版は、画像の由来の記録(provenance)の `FRAPPE_BRANCH` で
+確かめました。ERPNext v16.36.1 の `pyproject.toml` は、Frappe に `>=16.21.0,<17.0.0` を求めています
+(https://github.com/frappe/erpnext/blob/v16.36.1/pyproject.toml 、2026-09-29 に確かめました)。
 
 ## いまの状態
 
