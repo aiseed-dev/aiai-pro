@@ -1,5 +1,11 @@
 # Secrets and container data stay on the server
 .env
+.env.*
+!.env.example
+*.p8
+*.pem
+*.key
+*.db
 **/pg_data/
 **/forgejo/
 **/oo_data/

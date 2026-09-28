@@ -42,7 +42,21 @@ OSS と AI で自分の側に置くための物です。
   Microsoft ID は足しません(認証の相手を 1 つ足すたびに、登録して手入れする所が 1 つ増えます)
 - 外のサービスに頼るのは、大きな AI のモデルと、Web サイトの公開(Cloudflare Pages)と、
   メールの中継くらいにします。それ以外は OSS を自分のサーバーで動かします
-- 秘密の値(パスワード、鍵、API のトークン)は、AI への依頼にも、このリポジトリにも入れません
+- 秘密の値は、AI への依頼にも、このリポジトリにも、会社のリポジトリ([code](code/))にも
+  入れません。具体的には、API のトークンと鍵(AWS のアクセスキー、Google Cloud のサービス
+  アカウントの JSON の鍵、Cloudflare の API トークン、Apple のサインインの鍵 `.p8`、AI の
+  API キー)、パスワードが入った接続文字列(`postgresql://ユーザー:パスワード@ホスト/…`)、
+  `.env` のファイル、compose に直に書いた `JWT_SECRET` や `POSTGRES_PASSWORD`、SSH と TLS の
+  秘密鍵、社員やお客さんのデータベースのファイルです。1 度 push すると、消しても漏れた物として
+  扱い、まず無効にして作り直します。GitHub の個人のアカウントには push の前に止める機能
+  (push protection)が最初から有効ですが、止められる物は一部です。Forgejo にはこの機能が
+  あるかを確かめていません
+
+  出典: GitHub Docs「Push protection」
+  (https://docs.github.com/en/code-security/concepts/secret-security/push-protection)、
+  「Removing sensitive data from a repository」
+  (https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)。
+  2026-09-28 に確かめました
 - 社員やお客さんの個人の情報は、他人の情報です。本人の同意なく AI のサービスに入れ、それが
   応答以外(学習など)に使われると、個人情報保護法に反する可能性があると個人情報保護委員会が
   注意しています。入れるなら、そのサービスが学習に使わないことを確かめてからにします。

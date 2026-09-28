@@ -39,8 +39,9 @@ docker compose images
 書かないこと:
 
 - 会社が分かる物: 会社の名前、ドメイン、サーバーの IP アドレスとホスト名、社員のメールアドレス
-- 秘密の値: `.env` の中身、パスワード、鍵、トークン、`JWT_SECRET`。`docker compose config` の
-  出力には `.env` の値が入るので、貼りません
+- 秘密の値: `.env` の中身、パスワード入りの接続文字列、API のトークンと鍵(AWS、Google Cloud、
+  Cloudflare、Apple の `.p8`)、`JWT_SECRET`、SSH と TLS の秘密鍵。`docker compose config` の
+  出力には `.env` の値が入るので、貼りません。貼ってしまったら、その値を無効にして作り直します
 - ログ(記録)をそのまま貼ること。IP アドレス、メールアドレス、パスワードが入ることが
   あります。要る行だけを、それらを消して貼ります
 - `bunseki/yosoku.py` のデータ。報告するのは、行と列の数、列の型、出た精度の数字までです
