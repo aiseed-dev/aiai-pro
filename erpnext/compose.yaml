@@ -1,0 +1,156 @@
+# ERPNext v16 in Japanese for aiai pro, built from the Dockerfile here.
+# Made after the docker-compose.yml of maihatch/erpnext-ja-starter and the
+# pwd.yml and overrides of frappe/frappe_docker (both MIT). The web port is
+# bound to 127.0.0.1 and published by Caddy as erp.example.jp. Put the
+# passwords in .env; never commit .env.
+# Sample only: has not been run yet (2026-09-29).
+
+x-erpnext: &erpnext
+  image: erpnext-ja:${ERPNEXT_VERSION}
+  build:
+    context: .
+    args:
+      ERPNEXT_VERSION: ${ERPNEXT_VERSION}
+  volumes:
+    - sites:/home/frappe/frappe-bench/sites
+    - logs:/home/frappe/frappe-bench/logs
+
+x-after-configurator: &after-configurator
+  depends_on:
+    configurator:
+      condition: service_completed_successfully
+
+services:
+  backend:
+    <<: [*erpnext, *after-configurator]
+    restart: unless-stopped
+
+  frontend:
+    <<: *erpnext
+    restart: unless-stopped
+    command: ["nginx-entrypoint.sh"]
+    environment:
+      BACKEND: backend:8000
+      SOCKETIO: websocket:9000
+      FRAPPE_SITE_NAME_HEADER: ${SITE_NAME}
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+      PROXY_READ_TIMEOUT: 120
+      CLIENT_MAX_BODY_SIZE: 50m
+    ports:
+      - "127.0.0.1:${HTTP_PORT}:8080"
+    depends_on:
+      - backend
+      - websocket
+
+  websocket:
+    <<: [*erpnext, *after-configurator]
+    restart: unless-stopped
+    command: ["node", "/home/frappe/frappe-bench/apps/frappe/socketio.js"]
+
+  queue-short:
+    <<: [*erpnext, *after-configurator]
+    restart: unless-stopped
+    command: ["bench", "worker", "--queue", "short,default"]
+
+  queue-long:
+    <<: [*erpnext, *after-configurator]
+    restart: unless-stopped
+    command: ["bench", "worker", "--queue", "long,default,short"]
+
+  scheduler:
+    <<: [*erpnext, *after-configurator]
+    restart: unless-stopped
+    command: ["bench", "schedule"]
+
+  db:
+    image: mariadb:11.8
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Put DB_ROOT_PASSWORD in .env}
+      MARIADB_AUTO_UPGRADE: 1
+    volumes:
+      - db-data:/var/lib/mysql
+
+  redis-cache:
+    image: redis:8.6-alpine
+    restart: unless-stopped
+
+  redis-queue:
+    image: redis:8.6-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-queue-data:/data
+
+  # Runs once: writes where the database and Redis are.
+  configurator:
+    <<: *erpnext
+    restart: "no"
+    entrypoint: ["bash", "-c"]
+    command:
+      - >
+        ls -1 apps > sites/apps.txt;
+        bench set-config -g db_host $$DB_HOST;
+        bench set-config -gp db_port $$DB_PORT;
+        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+        bench set-config -gp socketio_port $$SOCKETIO_PORT;
+        bench set-config -g chromium_path /usr/bin/chromium-headless-shell;
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      REDIS_CACHE: redis-cache:6379
+      REDIS_QUEUE: redis-queue:6379
+      SOCKETIO_PORT: "9000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
+      redis-queue:
+        condition: service_started
+
+  # Runs once: makes the site with ERPNext and erpnext_jp_core, and stops
+  # if the site is already there.
+  create-site:
+    <<: [*erpnext, *after-configurator]
+    restart: "no"
+    entrypoint: ["bash", "-c"]
+    command:
+      - >
+        wait-for-it -t 120 db:3306;
+        if [ -f sites/$$SITE_NAME/site_config.json ]; then
+          echo "Site $$SITE_NAME is already there.";
+          exit 0;
+        fi;
+        bench new-site
+        --mariadb-user-host-login-scope='%'
+        --admin-password="$$ADMIN_PASSWORD"
+        --db-root-username=root
+        --db-root-password="$$DB_ROOT_PASSWORD"
+        --install-app erpnext
+        --install-app erpnext_jp_core
+        --set-default
+        "$$SITE_NAME";
+    environment:
+      SITE_NAME: ${SITE_NAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Put ADMIN_PASSWORD in .env}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Put DB_ROOT_PASSWORD in .env}
+
+volumes:
+  sites:
+  logs:
+  db-data:
+  redis-queue-data:

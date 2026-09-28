@@ -10,6 +10,7 @@
 **/forgejo/
 **/oo_data/
 **/oo_logs/
+erpnext/erpnext-ja-starter/
 # What the scripts write
 __pycache__/
 確認の結果.md

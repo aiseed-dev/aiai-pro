@@ -26,29 +26,82 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
 
 1. 何から入るかを聞きます。いまの ERP は何か、周りの仕事のうち、いまいちばん困っている物は
    どれか(たとえば、見積が Excel でばらばら、備品の管理が無い)
-2. 試します。frappe_docker の `pwd.yml` で、使い捨ての物が動きます
+2. 試します。会社の人の PC で、使い捨ての物を動かします。日本語の画面で触るなら、有志の
+   maihatch/erpnext-ja-starter(MIT)がそのまま動きます。中身は、公式の画像に
+   `erpnext_jp_core` という custom app(翻訳と、インボイスの欄が 3 つ)を足した物です
 
    ```
-   git clone https://github.com/frappe/frappe_docker
-   cd frappe_docker
-   docker compose -f pwd.yml up -d
+   git clone https://github.com/maihatch/erpnext-ja-starter
+   cd erpnext-ja-starter
+   cp .env.example .env
+   docker compose up -d
    ```
 
-   `http://localhost:8080` に `Administrator` と `admin` で入ります。画像は
-   `frappe/erpnext:v16.36.0`(pwd.yml に書いてある版)です。README に「短い評価のため
-   だけの物で、custom app は入れられない」とあります。本番は、frappe_docker の
-   `docs/03-production/`(TLS、バックアップ、複数の site、Caddy での HTTPS)を読んで作ります
-3. 日本語にします。本体には ja の翻訳がありません(erpnext/locale と frappe/locale に
-   ありません。2026-09-27 に確かめました)。有志の lifegence/frappe_japanese_translations
-   (MIT、v15 と v16 用)は、大半が AI の下書きで人が見直していません。使うなら、会社が
-   使う画面から順に、会社の人が見直します。見直した物は、その有志のリポジトリに返します
-4. 書体を入れます。公式の Docker の画像には、PDF の日本語の書体がありません。
-   custom app の画像に、開いた書体(IPAex や Noto CJK など。ライセンスを確かめます)を足します
-5. 帳票を作ります。見積書、発注書、納品書の形と、和暦の日付を、Print Format で作ります。
+   `http://localhost:8080/desk` に `Administrator` と `admin` で入ります。画面が英語のときは、
+   右上のアバターの「Edit Profile」で Language を「日本語」にして保存し、読み込み直します。
+   英語の画面でよければ、frappe_docker の `pwd.yml`(`docker compose -f pwd.yml up -d`、
+   画像は `frappe/erpnext:v16.36.1`)でも試せます。どちらも試すための物で、パスワードが
+   `admin` のままなので、会社のデータは入れません
+3. 会社の環境を作ります。見本は、このフォルダーの [Dockerfile](Dockerfile)、
+   [compose.yaml](compose.yaml)、[.env.example](.env.example) です。スターターから次を変えました
+   * 版を `v16.36.1` に固定しました。スターターは `version-16` で、黙って版が上がります
+   * PDF の日本語の書体(Debian の `fonts-noto-cjk`、OFL-1.1、53.9MB)を足しました
+   * 画面の番号を `127.0.0.1` だけに向け、Caddy から `erp.example.jp` で出します
+     ([server の Caddyfile](../server/Caddyfile))
+   * パスワードの既定の `admin` をやめ、`.env` に無ければ止まるようにしました
+   * v16 の PDF が使う chromium の場所を、frappe_docker の compose.yaml と同じく設定します
+   * DB と Redis を、frappe_docker の overrides と同じ `mariadb:11.8`、`redis:8.6-alpine` にしました
+
+   入れる前に、スターターの中身を読みます。スターターは、このフォルダーに、確かめた
+   コミットで取ります(`.gitignore` に入っていて、このリポジトリには入りません)
+
+   ```
+   git clone https://github.com/maihatch/erpnext-ja-starter erpnext/erpnext-ja-starter
+   git -C erpnext/erpnext-ja-starter checkout b4942347e73a821d2be4c988638944b41896ed43
+   ```
+
+   AI に `erpnext_jp_core/hooks.py`、`install.py`、`patches/add_japan_tax_fields.py` を読ませ、
+   何を変えるかを会社の人に伝えます。2026-09-29 に読んだときは、入れたときに言語を ja、
+   国を Japan、時刻を Asia/Tokyo、通貨を JPY にし、Company に「課税区分」と
+   「インボイス登録番号」、Item に「税区分」の欄を足すだけでした。コミットを変えたら読み直します。
+   読んだら、サーバーで会社の人が動かします(画像は数 GB です)
+
+   ```
+   cd erpnext
+   cp .env.example .env
+   docker compose up -d --build
+   docker compose logs -f create-site
+   docker compose exec backend bench --site erp.example.jp set-config host_name https://erp.example.jp
+   ```
+
+   `.env` の `変えてください` は、会社の人が入れます。最初のサインインの後、Administrator の
+   パスワードを画面で変え、`.env` の `ADMIN_PASSWORD` は消します(サイトを作るときにだけ使います)。
+   バックアップは、frappe_docker の説明書のとおり、日ごとに次を動かし、`sites` の volume を
+   別の場所に写します。戻せることを 1 度は確かめます
+
+   ```
+   docker compose exec backend bench --site all backup --with-files
+   ```
+
+4. 日本語を見直します。本体には ja の翻訳がありません(erpnext/locale と frappe/locale に
+   ありません。2026-09-27 に確かめました)。スターターの `translations/ja.csv`(17,735 行)で
+   画面は日本語になりますが、次のことに気をつけます(2026-09-29 に確かめました)
+   * 出どころが書いてありません。6,113 組(約 35%)が、ERPNext の version-13 にあった
+     `erpnext/translations/ja.csv`(GPL-3.0)と訳まで同じです。スターターは全体を MIT と
+     しています。社内で使うだけなら渡す相手がいませんが、人に渡すときは、出どころを
+     作者に確かめます([README](README.md) の「ライセンス」)
+   * 訳語を、会社の言葉に合わせます。たとえば Submit が「提出」、Journal Entry が「仕訳帳」、
+     Posting Date が「転記日付」、Grand Total が「総額」です。561 行は英語のままです。
+     会社が使う画面から順に、会社の人が見直します
+   * 見直した訳は、会社の custom app の `translations/ja.csv` に置きます。見直した物は、
+     スターターに返します。もう 1 つの有志の lifegence/frappe_japanese_translations
+     (MIT、v15 と v16 用)は、大半が AI の下書きで人が見直していません
+5. PDF の書体を確かめます。見積書を 1 枚 PDF にして、日本語が出ることを見ます
+6. 帳票を作ります。見積書、発注書、納品書の形と、和暦の日付を、Print Format で作ります。
    会社のいまの帳票を見せてもらい、同じ項目を並べます
-6. いまの ERP とつなぎます。いまの ERP から CSV で出し、ERPNext の Data Import で
+7. いまの ERP とつなぎます。いまの ERP から CSV で出し、ERPNext の Data Import で
    読み込む形を作ります。まず照会だけ(読むだけ)にし、書き戻しません
-7. 会計まで広げるときは、日本の決まりを足します。2026-09-27 に、ERPNext の develop と
+8. 会計まで広げるときは、日本の決まりを足します。2026-09-27 に、ERPNext の develop と
    version-16 で確かめたことです
    * 日本の地域の設定(erpnext/regional)と、日本の勘定科目表(chart_of_accounts)が
      ありません。会社の勘定科目表を作って入れます
@@ -58,11 +111,12 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
    * インボイス制度: 登録番号は自由な文字の欄(`tax_id`)で、T と 13 桁の確かめが無く、
      標準の請求書に印刷されません。税率ごとの合計と、軽減税率の品目の印も出ません。
      国税庁の要件(https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/invoice_about.htm)を
-     読み、Print Format と custom app で足します。有志の maihatch/erpnext-ja-starter(MIT)は、
-     登録番号など 3 つの欄を足す物です
+     読み、Print Format と custom app で足します。スターターが足す欄は、置き場所だけです。
+     登録番号は自由な文字の欄で、Item の「税区分」は税の計算につながっていません。また、
+     本体の Tax Category の訳も「税区分」で、名前がぶつかります
    * 源泉徴収: 1 つの税率は入りますが、100 万円を超える所の 20.42% の 2 段の計算と、
      円未満の切り捨てがありません
-8. 作った物(翻訳、書体、帳票、日本の決まりの app)は、会社のリポジトリ([code](../code/))に
+9. 作った物(翻訳、書体、帳票、日本の決まりの app)は、会社のリポジトリ([code](../code/))に
    置き、公開してよい物は GitHub に出します。次に使う会社が同じ物を作らずに済みます
 
 ## 出典
@@ -72,8 +126,20 @@ ERP なので、AI に読ませて構造を理解させ、会社に合わせて�
 - frappe/frappe_docker(https://github.com/frappe/frappe_docker)v3.2.2、MIT。
   `pwd.yml`(https://github.com/frappe/frappe_docker/blob/main/pwd.yml)、
   README(https://github.com/frappe/frappe_docker/blob/main/README.md)
-- lifegence/frappe_japanese_translations(https://github.com/lifegence/frappe_japanese_translations)、
-  maihatch/erpnext-ja-starter(https://github.com/maihatch/erpnext-ja-starter)
+- frappe_docker の説明書「Build Setup」
+  (https://github.com/frappe/frappe_docker/blob/main/docs/02-setup/02-build-setup.md)、
+  「Backup Strategy」(https://github.com/frappe/frappe_docker/blob/main/docs/03-production/02-backup-strategy.md)、
+  「Caddy with HTTPS」(https://github.com/frappe/frappe_docker/blob/main/docs/03-production/05-caddy-https.md)、
+  overrides の `compose.mariadb.yaml` と `compose.redis.yaml`。2026-09-29 に確かめました
+- maihatch/erpnext-ja-starter(https://github.com/maihatch/erpnext-ja-starter)、MIT、
+  コミット b4942347e73a821d2be4c988638944b41896ed43(2026-04-25)。README に v16.13 の
+  ERPNext と v16.14 の Frappe で動かしたとあります。2026-09-29 に読みました
+- ERPNext version-13 の翻訳
+  (https://github.com/frappe/erpnext/blob/version-13/erpnext/translations/ja.csv)。
+  2026-09-29 に、スターターの ja.csv と比べました
+- Debian の fonts-noto-cjk(https://packages.debian.org/bookworm/fonts-noto-cjk)、
+  OFL-1.1。公式の画像は Debian bookworm です。2026-09-29 に確かめました
+- lifegence/frappe_japanese_translations(https://github.com/lifegence/frappe_japanese_translations)
 - 国税庁「インボイス制度の概要」
   (https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/invoice_about.htm)
 

@@ -145,6 +145,9 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | scikit-learn、LightGBM、SHAP | 1.9.1、4.7.0、0.52.0(conda-forge) | BSD-3-Clause、MIT、MIT | https://anaconda.org/conda-forge/ |
 | ERPNext、Frappe Framework | v16.36.0、v15.121.1 | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
 | frappe_docker | v3.2.2 | MIT | https://github.com/frappe/frappe_docker/releases |
+| erpnext-ja-starter(ERPNext の日本語と、インボイスの欄) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
+| MariaDB、Redis(ERPNext の DB とキュー) | 11.8、8.6 | GPL-2.0、AGPL-3.0 を選べる | https://github.com/frappe/frappe_docker/tree/main/overrides |
+| Noto CJK(fonts-noto-cjk、PDF の日本語) | 1:20220127(Debian bookworm) | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
 
 BigBlueButton のライセンスは、リポジトリの LICENSE を GitHub の API で確かめました。
 

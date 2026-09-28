@@ -64,6 +64,8 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
   scikit-learn など)が入っていない。conda で入れて動かすには、発注者の許しが要る
 - Cal.com の自分で置く版は cal.diy(MIT)に分かれ、「個人の、本番でない利用に強く勧める」と
   書いてある。使うかどうかは会社が決める形にした
-- ERPNext の日本の決まり(日本語、書体、帳票、インボイス制度、勘定科目、源泉徴収)は、
-  調べ(2026-09-27)を手順に書いただけで、custom app はまだ作っていない
+- ERPNext は、maihatch/erpnext-ja-starter(MIT)を元に、書体と版の固定を足した見本
+  (`erpnext/Dockerfile`、`compose.yaml`)を作った(2026-09-29)。動かしていない。スターターの
+  ja.csv の約 35% は ERPNext version-13 の翻訳(GPL-3.0)と同じで、出どころは作者に聞いていない。
+  帳票、インボイス制度、勘定科目、源泉徴収の custom app はまだ作っていない
 - GitHub のリポジトリ(aiseed-dev/aiai-pro、公開)は発注者が作る。作ったらラベルを作る
