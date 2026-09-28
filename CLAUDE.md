@@ -33,8 +33,8 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
   出す物なので、「渡さない」と決めつけない
 - Web サイトは aiai の `website/` のスキルを使い、ここでは作り直さない。officework も aiai と
   同じく、公開された版を使うだけにする
-- ERPNext をどこまで使うか(周りの仕事だけか、置き換えるか)は会社が決める。スキルは決めつけず、
-  選ぶ材料を書く。GPL と「自社利用限定」の
+- ERPNext は、ERP とは何かと、自分の PC で動かせる環境を作ることだけを書く。移るかどうかは、
+  使えると分かってから考える。GPL と「自社利用限定」の
   関係は `erpnext/README.md` に書いてあり、法律の助言ではないと明記する
 
 ## 作業の進め方(aiai と違う所)
@@ -53,7 +53,7 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
 |---|---|
 | `server/`、`dodai/`、`ninshou/`、`code/`、`bunsho/`、`mail/`、`kaigi/`、`web/`、`api/`、`jouhou/`、`ai/` | aiseed.dev の自立編の順のスキル。見本の設定と `api/sample/main.py` |
 | `bunseki/` | 表のデータから予測する(Polars、scikit-learn、LightGBM、SHAP)。`yosoku.py` |
-| `erpnext/` | ERPNext を日本の会社で使える形にする。`README.md` にライセンスの決まり |
+| `erpnext/` | ERP とは何かと、ERPNext を自分の PC で動かす見本。`README.md` にライセンスの決まり |
 | `tools/kakunin.py` | 出典の URL と確かめた日を集め、確かめ直す物を出す。aiai と同じ |
 | `HOUKOKU.md`、`.github/ISSUE_TEMPLATE/` | 報告のしかたと Issue のひな形 |
 
@@ -65,9 +65,7 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
   scikit-learn など)が入っていない。conda で入れて動かすには、発注者の許しが要る
 - Cal.com の自分で置く版は cal.diy(MIT)に分かれ、「個人の、本番でない利用に強く勧める」と
   書いてある。使うかどうかは会社が決める形にした
-- ERPNext は、maihatch/erpnext-ja-starter(MIT)を元に、書体と版の固定を足した見本
-  (`erpnext/Dockerfile`、`compose.yaml`)を作った(2026-09-29)。まず自分の PC で一人が何でもできる形にし、
-  サーバーに移すのは後にした。動かしていない。スターターの
-  ja.csv の約 35% は ERPNext version-13 の翻訳(GPL-3.0)と同じで、出どころは作者に聞いていない。
-  帳票、インボイス制度、勘定科目、源泉徴収の custom app はまだ作っていない
+- ERPNext は、maihatch/erpnext-ja-starter(MIT)を元に、自分の PC で一人が使う見本
+  (`erpnext/Dockerfile`、`compose.yaml`)を作った(2026-09-29)。動かしていない。スターターの
+  ja.csv の約 35% は ERPNext version-13 の翻訳(GPL-3.0)と同じで、出どころは作者に聞いていない
 - GitHub のリポジトリ(aiseed-dev/aiai-pro、公開)は発注者が作る。作ったらラベルを作る

@@ -1,8 +1,7 @@
 # ERPNext
 
-ERPNext(frappe/erpnext)を日本の会社で使える形にするスキルです。AI に [SKILL.md](SKILL.md) を
-読ませると、AI が会社の人に聞きながら、試す、日本語にする、帳票を作る、いまの ERP の
-データを入れる、日本の決まりを足す、の順に進めます。
+ERP とは何かを知り、ERPNext(frappe/erpnext)を日本語で、自分の PC で動かすスキルです。
+AI に [SKILL.md](SKILL.md) を読ませると、AI が会社の人と一緒に、見本の設定で環境を作ります。
 
 ## ライセンス
 

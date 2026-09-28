@@ -1,9 +1,8 @@
 # ERPNext v16 in Japanese for aiai pro, built from the Dockerfile here.
 # Made after the docker-compose.yml of maihatch/erpnext-ja-starter and the
 # pwd.yml and overrides of frappe/frappe_docker (both MIT). The web port is
-# bound to 127.0.0.1: on one's own PC, open http://localhost:8080; on a
-# server, Caddy publishes it as erp.example.jp. Put the passwords in .env;
-# never commit .env.
+# bound to 127.0.0.1: open http://localhost:8080 on the same PC. Put the
+# passwords in .env; never commit .env.
 # Sample only: has not been run yet (2026-09-29).
 
 x-erpnext: &erpnext

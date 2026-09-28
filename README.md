@@ -85,7 +85,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | 9 | [jouhou](jouhou/) | OCR、分類、Markdown や adoc への書き起こし | (AI の前の整備) |
 | 10 | [ai](ai/) | Ollama、AnythingLLM、pgvector で RAG | Copilot、Gemini |
 | 11 | [bunseki](bunseki/) | Polars、scikit-learn、LightGBM、SHAP | 表のデータから予測する SaaS |
-| 12 | [erpnext](erpnext/) | ERPNext を日本の会社で使える形にする | 基幹の ERP、またはその周りの仕事 |
+| 12 | [erpnext](erpnext/) | ERP とは何かを知り、ERPNext を自分の PC で動かす | (使えると分かってから考える) |
 
 ## 使い方
 
@@ -143,9 +143,9 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | AnythingLLM | v1.16.2 | MIT | https://github.com/Mintplex-Labs/anything-llm/releases |
 | North Mini Code 1.0(Cohere) | 30B(3B が動く)MoE | Apache-2.0 | https://docs.cohere.com/docs/north-mini-code-1.0 |
 | scikit-learn、LightGBM、SHAP | 1.9.1、4.7.0、0.52.0(conda-forge) | BSD-3-Clause、MIT、MIT | https://anaconda.org/conda-forge/ |
-| ERPNext、Frappe Framework | v16.36.0、v15.121.1 | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
+| ERPNext、Frappe Framework | v16.36.1(画像)、v15.121.1 | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
 | frappe_docker | v3.2.2 | MIT | https://github.com/frappe/frappe_docker/releases |
-| erpnext-ja-starter(ERPNext の日本語と、インボイスの欄) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
+| erpnext-ja-starter(ERPNext の日本語) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
 | MariaDB、Redis(ERPNext の DB とキュー) | 11.8、8.6 | GPL-2.0、AGPL-3.0 を選べる | https://github.com/frappe/frappe_docker/tree/main/overrides |
 | Noto CJK(fonts-noto-cjk、PDF の日本語) | 1:20220127(Debian bookworm) | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
 
