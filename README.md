@@ -85,7 +85,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | 9 | [jouhou](jouhou/) | OCR、分類、Markdown や adoc への書き起こし | (AI の前の整備) |
 | 10 | [ai](ai/) | Ollama、AnythingLLM、pgvector で RAG | Copilot、Gemini |
 | 11 | [bunseki](bunseki/) | Polars、scikit-learn、LightGBM、SHAP | 表のデータから予測する SaaS |
-| 12 | [erpnext](erpnext/) | ERPNext を日本の会社で使える形にする | 基幹の ERP の周りの仕事 |
+| 12 | [erpnext](erpnext/) | ERPNext を日本の会社で使える形にする | 基幹の ERP、またはその周りの仕事 |
 
 ## 使い方
 
