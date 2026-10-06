@@ -56,7 +56,7 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
 |---|---|
 | `server/`、`dodai/`、`ninshou/`、`code/`、`bunsho/`、`mail/`、`kaigi/`、`web/`、`api/`、`jouhou/`、`ai/` | aiseed.dev の自立編の順のスキル。見本の設定と `api/sample/main.py` |
 | `bunseki/` | 表のデータから予測する(Polars、scikit-learn、LightGBM、SHAP)。`yosoku.py` |
-| `kaiin/`、`tsuuchi/`、`renraku/`、`honnin/`、`kagi/`、`kanshi/`、`koukoku/`、`network/` | 事業用のアプリの部品(会員、通知、メッセージ、本人確認、鍵、VLM 監視、広告、ネットワーク)。`koukoku/` に Cloudflare Pages Functions のコードとテスト(`node --test`)。認証は `ninshou/` に書き足した |
+| `kaiin/`、`tsuuchi/`、`renraku/`、`honnin/`、`kagi/`、`kanshi/`、`koukoku/`、`network/` | 事業用のアプリの部品(会員、通知、メッセージ、本人確認、鍵、VLM 監視、広告、ネットワーク)。`koukoku/kaiseki/` に解析の受け口(Python、SQLite)とページのスクリプトとテスト。認証は `ninshou/` に書き足した |
 | `erpnext/` | ERP とは何かと、ERPNext を自分の PC で動かす手順。`aiai_ja/` は訳の追加と修正の Frappe アプリ。`README.md` にライセンスの決まり |
 | `tools/kakunin.py` | 出典の URL と確かめた日を集め、確かめ直す物を出す。aiai と同じ |
 | `HOUKOKU.md`、`.github/ISSUE_TEMPLATE/` | 報告のしかたと Issue のひな形 |
@@ -76,6 +76,7 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
   聞いていない
 - ntfy は、VLM 監視と鍵のスキルに 1 行だけ添えた。サーバーへの置き方と、iPhone の上流
   (ntfy.sh)の設定は、時間ができたら足す(2026-10-06)
-- `koukoku/` のコードは、Node 24 の node:sqlite を D1 の代わりにしたテスト(8 つ、わざと壊すと失敗する
-  ことも確かめた)だけで、Cloudflare には出していない(2026-10-07)。天気のサイトで動かして確かめる
+- `koukoku/kaiseki/` の受け口は、手元のテスト(8 つ、わざと壊すと失敗することも確かめた)だけで、
+  analytics.aiseed.dev には置いていない。`kaiseki.js` は文法の確かめだけで、ブラウザーで動かして
+  いない(2026-10-07)。先に作った Cloudflare の D1 版も Cloudflare には出していない
 - GitHub のリポジトリ(aiseed-dev/aiai-pro、公開)は発注者が作る。作ったらラベルを作る

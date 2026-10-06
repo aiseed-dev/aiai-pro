@@ -100,7 +100,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | [honnin](honnin/) | 本人確認(民泊と簡易宿所の宿泊者名簿が中心) | PocketBase、Jitsi |
 | [kagi](kagi/) | 鍵(スマートロックで期間を決めた鍵を出して消す) | Matter と Home Assistant、各社の API |
 | [kanshi](kanshi/) | 住宅と空き家の VLM 監視と顔認識 | Frigate、Ollama、OpenCV Zoo |
-| [koukoku](koukoku/) | 解析と広告をサーバーの側で(自社広告と協賛、タグも Cookie も無し) | Cloudflare Pages の Functions と D1 |
+| [koukoku](koukoku/) | 解析と広告を自分のサーバーで(Google Analytics と同じ程度、本人が選ぶ Cookie、会員とのひもづけ、AI で関心を読む) | Python の標準ライブラリと SQLite |
 | [network](network/) | Linux の PC をルーターにする | systemd-networkd、nftables、dnsmasq、Unbound、WireGuard、hostapd |
 
 ## 使い方

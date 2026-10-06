@@ -1,0 +1,161 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// kaiseki: put on every page as
+//   <script src="/kaiseki.js" data-to="https://analytics.aiseed.dev"
+//           data-own="time-j.net aiseed.dev" defer></script>
+// Sends about what Google Analytics collects: each view (page, title,
+// referrer, utm_*, language, time zone, screen, browser, session), the time
+// the page was in view when it is left, and events the page names with
+// kaiseki.event("name"). A person who presses 受け入れる gets a random ID in
+// this site's own cookie; it goes with every record, and is carried to our
+// other sites (data-own) on the links between them, so one person's visits
+// read together. 受け入れない keeps no ID. kaiseki.forget() deletes the ID
+// and everything kept under it. kaiseki.id() gives the ID to the site's own
+// server, which links it to a signed-in member (POST /v1/link on its side).
+(function () {
+  const me = document.currentScript;
+  const TO = (me && me.dataset.to) || "https://analytics.aiseed.dev";
+  const OWN = ((me && me.dataset.own) || "").split(/\s+/).filter(Boolean);
+  const NAME = "kaiseki_id";
+  const CHOICE = "kaiseki_choice";
+  const PARAM = "kaiseki_id";
+  const YEAR = 400 * 24 * 3600;
+  const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+  function cookie(name) {
+    const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+  function setCookie(name, value, maxAge) {
+    document.cookie = name + "=" + encodeURIComponent(value) + "; Max-Age=" + maxAge + "; Path=/; SameSite=Lax; Secure";
+  }
+  function refHost() {
+    try {
+      const h = new URL(document.referrer).host;
+      return h === location.host ? "" : h;
+    } catch (e) {
+      return "";
+    }
+  }
+  function utm() {
+    const q = new URLSearchParams(location.search);
+    const v = ["source", "medium", "campaign", "term", "content"].map(function (k) { return q.get("utm_" + k) || ""; });
+    return v.some(Boolean) ? v.join("|") : "";
+  }
+  function session() {
+    let s = "";
+    try {
+      s = sessionStorage.getItem(NAME + "_s") || "";
+      if (!UUID.test(s)) {
+        s = crypto.randomUUID();
+        sessionStorage.setItem(NAME + "_s", s);
+      }
+    } catch (e) {}
+    return s;
+  }
+  function own(host) {
+    return OWN.some(function (d) { return host === d || host.endsWith("." + d); });
+  }
+
+  // An ID carried here from another of our sites, by a link (?kaiseki_id=)
+  (function adopt() {
+    const url = new URL(location.href);
+    const vid = (url.searchParams.get(PARAM) || "").toLowerCase();
+    if (!url.searchParams.has(PARAM)) return;
+    url.searchParams.delete(PARAM);
+    history.replaceState(history.state, "", url.toString());
+    if (UUID.test(vid) && cookie(CHOICE) !== "no") {
+      setCookie(CHOICE, "yes", YEAR);
+      setCookie(NAME, vid, YEAR);
+    }
+  })();
+
+  function send(path, data) {
+    const body = JSON.stringify(data);
+    if (!(navigator.sendBeacon && navigator.sendBeacon(TO + path, body))) {
+      fetch(TO + path, { method: "POST", body: body, keepalive: true, mode: "cors" }).catch(function () {});
+    }
+  }
+  function record(event, extra) {
+    const data = {
+      site: location.host,
+      path: location.pathname,
+      event: event,
+      title: document.title,
+      referrer: refHost(),
+      utm: utm(),
+      lang: navigator.language || "",
+      tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || ""),
+      screen: screen.width + "x" + screen.height,
+      ua: navigator.userAgent,
+      sid: session(),
+      vid: cookie(NAME),
+    };
+    send("/v1/hit", Object.assign(data, extra || {}));
+  }
+
+  // Time the page was in view, sent when it is hidden or left
+  let shown = document.visibilityState === "visible" ? Date.now() : 0;
+  let total = 0;
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") {
+      if (shown) total += Date.now() - shown;
+      shown = 0;
+      if (total > 0) record("leave", { seconds: Math.round(total / 1000) });
+      total = 0;
+    } else {
+      shown = Date.now();
+    }
+  });
+
+  // Carry the ID on links to our other sites
+  document.addEventListener("click", function (e) {
+    const a = e.target.closest && e.target.closest("a[href]");
+    const vid = cookie(NAME);
+    if (!a || !vid) return;
+    let url;
+    try {
+      url = new URL(a.href, location.href);
+    } catch (err) {
+      return;
+    }
+    if (url.host !== location.host && own(url.host)) {
+      url.searchParams.set(PARAM, vid);
+      a.href = url.toString();
+    }
+  }, true);
+
+  function choose(yes) {
+    setCookie(CHOICE, yes ? "yes" : "no", YEAR);
+    if (yes && !cookie(NAME)) setCookie(NAME, crypto.randomUUID(), YEAR);
+    if (!yes && cookie(NAME)) forget();
+    const bar = document.getElementById("kaiseki-bar");
+    if (bar) bar.remove();
+  }
+  function forget() {
+    const vid = cookie(NAME);
+    if (vid) send("/v1/forget", { vid: vid });
+    setCookie(NAME, "", 0);
+  }
+  function ask() {
+    const bar = document.createElement("div");
+    bar.id = "kaiseki-bar";
+    bar.innerHTML =
+      "<p>このサイトをよくし、あなたに合った案内を出すために、見たページの記録を残してよいですか。" +
+      "受け入れると、このサイトの Cookie に番号を置き、その番号で記録をまとめます。" +
+      ' <a href="/kaiseki/">くわしく</a></p>' +
+      '<button type="button" data-yes>受け入れる</button> <button type="button" data-no>受け入れない</button>';
+    bar.querySelector("[data-yes]").onclick = function () { choose(true); };
+    bar.querySelector("[data-no]").onclick = function () { choose(false); };
+    document.body.appendChild(bar);
+  }
+
+  window.kaiseki = {
+    choose: choose,
+    forget: forget,
+    event: function (name, extra) { record(name, extra); },
+    id: function () { return cookie(NAME); },
+    to: TO,
+  };
+  record("view");
+  if (!cookie(CHOICE)) ask();
+})();
