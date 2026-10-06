@@ -114,6 +114,22 @@ class Kaiseki(unittest.TestCase):
         self.assertEqual(self.call("POST", "/v1/forget-member", {"member": "m2"}, token="link-secret")[1], {"deleted": 1})
         self.assertEqual(self.call("GET", f"/v1/mine?vid={VID2}")[1], {"members": [], "hits": []})
 
+    def test_only_https_pages_of_the_sites_and_the_extra_origins_may_read(self):
+        self.assertEqual(self.hit(vid=VID)[2]["Access-Control-Allow-Origin"], "https://weather.time-j.net")
+        status, _, headers = self.call("GET", f"/v1/mine?vid={VID}", origin="http://127.0.0.1:8001")
+        self.assertIsNone(headers["Access-Control-Allow-Origin"])
+        local = server.serve(0, os.path.join(self.dir.name, "l.db"), {"weather.time-j.net"}, "", "",
+                             extra_origins=["http://127.0.0.1:8001"])
+        threading.Thread(target=local.serve_forever, daemon=True).start()
+        try:
+            req = urllib.request.Request(f"http://127.0.0.1:{local.server_address[1]}/v1/mine?vid={VID}")
+            req.add_header("Origin", "http://127.0.0.1:8001")
+            with urllib.request.urlopen(req) as r:
+                self.assertEqual(r.headers["Access-Control-Allow-Origin"], "http://127.0.0.1:8001")
+        finally:
+            local.shutdown()
+            local.server_close()
+
     def test_report_needs_its_token(self):
         self.assertEqual(self.call("GET", "/v1/report?site=weather.time-j.net")[0], 403)
 

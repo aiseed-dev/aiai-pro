@@ -43,8 +43,18 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
 | [schema.sql](schema.sql)、[lib/](lib/)、[functions/](functions/)、[_routes.json](_routes.json)、[test/](test/) | 先に作った、Cloudflare Pages の Functions と D1 で数えて広告を差し込む見本 |
 
 集める項目は、Google Analytics とほぼ同じです。サイト、ページ、題、参照元のホスト、キャンペーン
-(`utm_`)、言語、時間帯、画面の大きさ、ブラウザー、訪問(タブ)の ID、ページを見ていた時間、出来事、
-受け入れた人の ID。受け口の口は次のとおりです。
+(`utm_`)、言語、時間帯、画面の大きさ、ブラウザー、ページを見ていた時間、出来事。受け入れた人の
+分には、Cookie の ID と、訪問(タブ)の ID が付きます。受け入れない人には、どちらの ID も置かず、
+数だけを数えます。
+
+- 受け入れるかの帯は、画面の下に固定して出します(サイトで `#kaiseki-bar` の見た目を変えられます)
+- 受け入れたときに、出来事 `accept` を ID 付きで送るので、そのページから数えられます
+- 自分のサイトどうしのリンクを渡るときは、ID を URL の `#` の後ろ(`#kaiseki_id=`)に載せて
+  引き継ぎ、行き先で受け入れたことにします。`#` の後ろはサーバーに送られないので、配信の記録に
+  残りません
+- ページを見ていた時間(出来事 `leave`)は、タブを切り替えるたびに送るので、集計では合計します
+
+受け口の口は次のとおりです。
 
 | 口 | 誰が | すること |
 |---|---|---|
@@ -57,15 +67,18 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
 
 1. 受け口を置きます。外から HTTPS で届く機械で `server.py` を動かし、Caddy から
    `analytics.aiseed.dev` で出します([server](../server/))。`KAISEKI_SITES` に数えるサイトの
-   ホストを書きます
+   ホストを書きます。手元で試すときだけ、`KAISEKI_ORIGINS` に `http://127.0.0.1:8001` のような
+   送り元を足すと、ページから自分の記録を読めます
 2. 各ページに置きます。`data-own` には、ID を引き継ぐ自分のサイトのドメインを書きます
 
    ```
    <script src="/kaiseki.js" data-to="https://analytics.aiseed.dev" data-own="time-j.net aiseed.dev" defer></script>
    ```
 
-3. 知らせのページ(`/kaiseki/`)を書きます。送る情報、送り先、目的、Cookie を受け入れるかを変える方法
-   (`kaiseki.choose()`)、自分の記録を見て消す方法
+3. 知らせのページ(`/kaiseki/`)を書きます。送る情報(上の項目と、Cookie の ID と訪問の ID)、
+   送り先、目的、自分のサイトどうしで ID を引き継ぐこと、Cookie を受け入れるかを変える方法
+   (`kaiseki.choose(true)` と `kaiseki.choose(false)`)、自分の記録を見て消す方法(`/v1/mine` と
+   `kaiseki.forget()`)
 4. 会員のサーバーが、サインインのときに、ページから `kaiseki.id()` を受け取り、`/v1/link` に送ります。
    退会のときは `/v1/forget-member` に送ります
 5. 申し込みなど、結果にあたる所で `kaiseki.event("signup")` のように出来事を送ります

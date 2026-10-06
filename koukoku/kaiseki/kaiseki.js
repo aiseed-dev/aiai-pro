@@ -6,9 +6,11 @@
 // referrer, utm_*, language, time zone, screen, browser, session), the time
 // the page was in view when it is left, and events the page names with
 // kaiseki.event("name"). A person who presses 受け入れる gets a random ID in
-// this site's own cookie; it goes with every record, and is carried to our
-// other sites (data-own) on the links between them, so one person's visits
-// read together. 受け入れない keeps no ID. kaiseki.forget() deletes the ID
+// this site's own cookie, and a visit ID in sessionStorage; they go with
+// every record, and the cookie ID is carried to our other sites (data-own) in
+// the #fragment of the links between them (a fragment is never sent to any
+// server), so one person's visits read together. 受け入れない keeps no ID of
+// any kind, and the views are only counted. kaiseki.forget() deletes the ID
 // and everything kept under it. kaiseki.id() gives the ID to the site's own
 // server, which links it to a signed-in member (POST /v1/link on its side).
 (function () {
@@ -43,6 +45,7 @@
   }
   function session() {
     let s = "";
+    if (cookie(CHOICE) !== "yes") return "";
     try {
       s = sessionStorage.getItem(NAME + "_s") || "";
       if (!UUID.test(s)) {
@@ -56,12 +59,14 @@
     return OWN.some(function (d) { return host === d || host.endsWith("." + d); });
   }
 
-  // An ID carried here from another of our sites, by a link (?kaiseki_id=)
+  // An ID carried here from another of our sites, by a link (#kaiseki_id=)
   (function adopt() {
     const url = new URL(location.href);
-    const vid = (url.searchParams.get(PARAM) || "").toLowerCase();
-    if (!url.searchParams.has(PARAM)) return;
-    url.searchParams.delete(PARAM);
+    const hash = new URLSearchParams(url.hash.slice(1));
+    const vid = (hash.get(PARAM) || "").toLowerCase();
+    if (!hash.has(PARAM)) return;
+    hash.delete(PARAM);
+    url.hash = hash.toString();
     history.replaceState(history.state, "", url.toString());
     if (UUID.test(vid) && cookie(CHOICE) !== "no") {
       setCookie(CHOICE, "yes", YEAR);
@@ -119,7 +124,9 @@
       return;
     }
     if (url.host !== location.host && own(url.host)) {
-      url.searchParams.set(PARAM, vid);
+      const hash = new URLSearchParams(url.hash.slice(1));
+      hash.set(PARAM, vid);
+      url.hash = hash.toString();
       a.href = url.toString();
     }
   }, true);
@@ -127,7 +134,12 @@
   function choose(yes) {
     setCookie(CHOICE, yes ? "yes" : "no", YEAR);
     if (yes && !cookie(NAME)) setCookie(NAME, crypto.randomUUID(), YEAR);
+    // The page in view counts from here, with the ID
+    if (yes) record("accept");
     if (!yes && cookie(NAME)) forget();
+    if (!yes) {
+      try { sessionStorage.removeItem(NAME + "_s"); } catch (e) {}
+    }
     const bar = document.getElementById("kaiseki-bar");
     if (bar) bar.remove();
   }
@@ -139,6 +151,11 @@
   function ask() {
     const bar = document.createElement("div");
     bar.id = "kaiseki-bar";
+    // Fixed to the bottom of the screen, so it is seen on long pages; a site may restyle #kaiseki-bar
+    bar.style.cssText =
+      "position:fixed;left:0;right:0;bottom:0;z-index:2147483647;padding:12px 16px;" +
+      "background:#fff;color:#111;border-top:1px solid #ccc;box-shadow:0 -2px 8px rgba(0,0,0,.15);" +
+      "font:14px/1.6 system-ui,sans-serif";
     bar.innerHTML =
       "<p>このサイトをよくし、あなたに合った案内を出すために、見たページの記録を残してよいですか。" +
       "受け入れると、このサイトの Cookie に番号を置き、その番号で記録をまとめます。" +

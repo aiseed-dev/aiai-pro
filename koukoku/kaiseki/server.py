@@ -173,8 +173,9 @@ def clean_hit(body, sites):
 MEMBER = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 
 
-def make_handler(store, sites, token, link_token=""):
-    origins = {f"https://{s}" for s in sites}
+def make_handler(store, sites, token, link_token="", extra_origins=()):
+    # Pages are served over HTTPS; extra origins (KAISEKI_ORIGINS) are for trying it on one's own PC
+    origins = {f"https://{s}" for s in sites} | set(extra_origins)
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):  # no access log: it would hold IP addresses
@@ -262,8 +263,8 @@ def make_handler(store, sites, token, link_token=""):
     return Handler
 
 
-def serve(port, db, sites, token, link_token="", host="127.0.0.1"):
-    return ThreadingHTTPServer((host, port), make_handler(Store(db), sites, token, link_token))
+def serve(port, db, sites, token, link_token="", host="127.0.0.1", extra_origins=()):
+    return ThreadingHTTPServer((host, port), make_handler(Store(db), sites, token, link_token, extra_origins))
 
 
 if __name__ == "__main__":
@@ -279,4 +280,5 @@ if __name__ == "__main__":
         sites,
         os.environ.get("KAISEKI_TOKEN", ""),
         os.environ.get("KAISEKI_LINK_TOKEN", ""),
+        extra_origins=os.environ.get("KAISEKI_ORIGINS", "").split(),
     ).serve_forever()
