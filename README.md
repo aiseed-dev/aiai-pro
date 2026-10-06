@@ -59,22 +59,13 @@ Web の構築も同じです。DNS、ファイアウォール、リバースプ�
   秘密鍵、社員やお客さんのデータベースのファイルです。1 度 push すると、消しても漏れた物として
   扱い、まず無効にして作り直します。GitHub の個人のアカウントには push の前に止める機能
   (push protection)が最初から有効ですが、止められる物は一部です。Forgejo にはこの機能が
-  あるかを確かめていません
-
-  出典: GitHub Docs「Push protection」
-  (https://docs.github.com/en/code-security/concepts/secret-security/push-protection)、
-  「Removing sensitive data from a repository」
-  (https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)。
-  2026-09-28 に確かめました
-- 社員やお客さんの個人の情報は、他人の情報です。本人の同意なく AI のサービスに入れ、それが
-  応答以外(学習など)に使われると、個人情報保護法に反する可能性があると個人情報保護委員会が
-  注意しています。入れるなら、そのサービスが学習に使わないことを確かめてからにします。
-  自分の機械で動く AI([ai](ai/))なら、外に出ません。会社の名前、住所、電話は事業として
-  出す物なので、AI に渡してかまいません
-
-  出典: 個人情報保護委員会「生成 AI サービスの利用に関する注意喚起等」
-  (https://www.ppc.go.jp/news/careful_information/230602_AI_utilize_alert/)。2026-09-28 に確かめました
-- ライセンスを確かめてから入れます。この README の表に、確かめた版とライセンスを書いています
+  あるかを確かめていません(GitHub Docs「Push protection」
+  https://docs.github.com/en/code-security/concepts/secret-security/push-protection 、2026-09-28 に確かめました)
+- 社員やお客さんの個人の情報は、学習に使わないと確かめた AI のサービスか、自分の機械の AI
+  ([ai](ai/))でだけ扱います。会社の名前、住所、電話は AI に渡してかまいません(個人情報保護
+  委員会の注意喚起 https://www.ppc.go.jp/news/careful_information/230602_AI_utilize_alert/ 、
+  2026-09-28 に確かめました)
+- ライセンスを確かめてから入れます。確かめた版とライセンスは [使う物](TSUKAUMONO.md) に書いています
 
 ## 順番
 
@@ -113,99 +104,21 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 
 ## 使い方
 
-1. このリポジトリを手元に取り、スキルを読める AI を用意します
+1. このリポジトリを手元に取り、スキルを読める AI を用意します。Web サイト([web](web/))は
+   [aiai](https://github.com/aiseed-dev/aiai) の `website/` のスキルを使うので、aiai も取ります
 
    ```
    git clone https://github.com/aiseed-dev/aiai-pro.git
-   cd aiai-pro
    ```
 
-   端末で動く道具は要りません。コードと設定は AI(Claude)が下書きし、コマンドは会社の人が
-   動かします。Web サイト([web](web/))は、[aiai](https://github.com/aiseed-dev/aiai) の
-   `website/` のスキルを使うので、aiai も手元に取ります
-2. `server/SKILL.md` から順に AI に読ませます。AI が会社の人に聞きながら、
-   1 つずつ入れます
-3. サーバーに入る鍵、パスワード、DNS の設定、アカウントの登録、サーバーでコマンドを
-   動かすことは、会社の人がします。AI は手順と設定の下書きを作ります
-4. 見本の設定(`compose.yaml`、`Caddyfile`、`.env.example`)は、写して会社の名前と番号に
-   直して使います。`.env` は `.gitignore` に入っていて、リポジトリに入りません
-5. 表のデータから予測するときは、部品を conda で入れてから動かします
-
-   ```
-   conda install -c conda-forge polars fastexcel xlsxwriter scikit-learn lightgbm shap
-   python bunseki/yosoku.py 学習.xlsx --target 目的の列
-   ```
-
-6. 出典は `python tools/kakunin.py --fetch --out 確認の結果.md` で確かめ直せます
-   (aiai の物と同じスクリプトです)
-7. 入れた物、困ったこと、変わっていたことは、[報告のしかた](HOUKOKU.md)で知らせてください
-
-## 使う物
-
-2026-09-28 に、各プロジェクトの公開の場所(GitHub、Codeberg、Docker Hub、公式の説明書)で
-確かめました。版は、そのときの最新の物です。制度と同じで、版もライセンスも変わるので、
-入れる前に確かめ直してください。
-
-| 物 | 確かめた版 | ライセンス | 出典 |
-|---|---|---|---|
-| Docker Engine | (Ubuntu 22.04、24.04、26.04 LTS 用) | Apache-2.0 | https://docs.docker.com/engine/install/ubuntu/ |
-| Caddy | v2.11.4 | Apache-2.0 | https://github.com/caddyserver/caddy/releases |
-| PostgreSQL + pgvector | pgvector v0.8.6、画像 `pgvector/pgvector:pg18` まで | PostgreSQL License | https://github.com/pgvector/pgvector |
-| DuckDB | v1.5.5 | MIT | https://github.com/duckdb/duckdb |
-| Polars | py-1.44.2 | MIT | https://github.com/pola-rs/polars |
-| PocketBase | v0.40.4 | MIT | https://github.com/pocketbase/pocketbase/releases |
-| Forgejo | v16.0.5 | GPL-3.0 | https://codeberg.org/forgejo/forgejo/releases |
-| ONLYOFFICE Docs | v9.4.0 | AGPL-3.0 | https://github.com/ONLYOFFICE/DocumentServer/releases |
-| Stalwart | v0.16.24 | AGPL-3.0(独自の SELv2 との二重) | https://github.com/stalwartlabs/stalwart/releases |
-| Jitsi Meet(docker-jitsi-meet) | stable-11248 | Apache-2.0 | https://github.com/jitsi/docker-jitsi-meet/releases |
-| Cal.diy | (calcom/cal.diy) | MIT | https://github.com/calcom/cal.diy |
-| BigBlueButton | v3.0.37 | LGPL-3.0 | https://github.com/bigbluebutton/bigbluebutton/releases |
-| Radicale | (Kozea/Radicale) | GPL-3.0 | https://github.com/Kozea/Radicale |
-| FastAPI | (fastapi/fastapi) | MIT | https://github.com/fastapi/fastapi |
-| Tesseract、OCRmyPDF | (tesseract-ocr/tesseract、ocrmypdf/OCRmyPDF) | Apache-2.0、MPL-2.0 | https://github.com/tesseract-ocr/tesseract 、https://github.com/ocrmypdf/OCRmyPDF |
-| Ollama | v0.34.4 | MIT | https://github.com/ollama/ollama/releases |
-| AnythingLLM | v1.16.2 | MIT | https://github.com/Mintplex-Labs/anything-llm/releases |
-| North Mini Code 1.0(Cohere) | 30B(3B が動く)MoE | Apache-2.0 | https://docs.cohere.com/docs/north-mini-code-1.0 |
-| scikit-learn、LightGBM、SHAP | 1.9.1、4.7.0、0.52.0(conda-forge) | BSD-3-Clause、MIT、MIT | https://anaconda.org/conda-forge/ |
-| ERPNext、Frappe Framework | v16.36.1、v16.35.0(2026-10-06 にこの組で動かした) | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
-| frappe-bench(ERPNext を組んで動かす道具) | 5.31.0 | GPL-3.0 | https://pypi.org/project/frappe-bench/ |
-| MariaDB(ERPNext の DB、Ubuntu 24.04 の物) | 10.11.14 | GPL-2.0 | https://packages.ubuntu.com/noble/mariadb-server |
-| Redis(ERPNext のキュー、conda-forge の redis-server) | 7.2.11 | BSD-3-Clause | https://anaconda.org/conda-forge/redis-server |
-| wkhtmltopdf(ERPNext の PDF) | 0.12.6.1-3 | LGPL-3.0 | https://github.com/wkhtmltopdf/packaging/releases |
-| erpnext-ja-starter(ERPNext の日本語) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
-| aiai_ja(このリポジトリの ERPNext の訳の追加と修正) | 0.1.0 | AGPL-3.0-or-later、訳は CC BY 4.0 | [erpnext/aiai_ja](erpnext/aiai_ja/) |
-| frappe_docker(Docker で動かす見本だけに使う) | v3.2.2 | MIT | https://github.com/frappe/frappe_docker/releases |
-| Noto CJK(fonts-noto-cjk、PDF の日本語) | Ubuntu と Debian の物 | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
-| pywebpush | 2.5.0 | MPL-2.0 | https://pypi.org/project/pywebpush/ |
-| ntfy | v2.28.0 | Apache-2.0 と GPL-2.0 | https://github.com/binwiederhier/ntfy |
-| Home Assistant | 2026.9.4 | Apache-2.0 | https://github.com/home-assistant/core |
-| Frigate | v0.18.0 | MIT | https://github.com/blakeblackshear/frigate |
-| OpenCV Zoo の YuNet、SFace | (opencv/opencv_zoo) | MIT、Apache-2.0 | https://github.com/opencv/opencv_zoo |
-| nftables、systemd | 1.1.7、v262 | GPL、LGPL-2.1 | https://www.netfilter.org/projects/nftables/ 、https://github.com/systemd/systemd |
-| dnsmasq、Unbound | 2.93、1.26.1 | GPL、BSD-3-Clause | https://thekelleys.org.uk/dnsmasq/doc.html 、https://github.com/NLnetLabs/unbound |
-| WireGuard(wireguard-tools)、hostapd | v1.0.20260223、2.12 | GPL-2.0、BSD | https://www.wireguard.com/install/ 、https://w1.fi/hostapd/ |
-
-BigBlueButton のライセンスは、リポジトリの LICENSE を GitHub の API で確かめました。
-
-ERPNext の画像に入っている Frappe の版は、画像の由来の記録(provenance)の `FRAPPE_BRANCH` で
-確かめました。ERPNext v16.36.1 の `pyproject.toml` は、Frappe に `>=16.21.0,<17.0.0` を求めています
-(https://github.com/frappe/erpnext/blob/v16.36.1/pyproject.toml 、2026-09-29 に確かめました)。
+2. `server/SKILL.md` から順に AI に読ませます。コードと設定は AI が下書きし、コマンドは会社の人が
+   動かします。見本の設定(`compose.yaml`、`Caddyfile`、`.env.example`)は写して直します
+3. 入れた物、困ったこと、変わっていたことは、[報告のしかた](HOUKOKU.md)で知らせてください
 
 ## いまの状態
 
-- ここにある手順と設定は、各プロジェクトの公式の説明書から書き、URL と確かめた日を付けました。
-  このリポジトリの中では、まだ実際にサーバーに入れて動かしていません。動かした人の報告で
-  直します
-- ERPNext は、2026-10-06 に、Ubuntu 24.04 の PC で Docker を使わずに動かしました(MariaDB 10.11、
-  conda の環境、bench)。設定のウィザード、見積から請求までの仕訳、見積の PDF の日本語を確かめました。
-  訳は [erpnext/aiai_ja](erpnext/aiai_ja/) で足し、直しています。帳票のひな形に英語が直に書かれている
-  所(見積の題、顧客名、請求先)は、まだ英語です
-- `api/sample/main.py` と `bunseki/yosoku.py` は動く例として書きましたが、この環境には
-  部品(fastapi、polars、scikit-learn など)が入っていないので、まだ動かしていません。
-  文法の確かめ(`python -m py_compile`)だけしています
-- aiseed.dev の自立編が土台にしている公開のリポジトリ(aiseed-dev/workspace の「蔵」、
-  aiseed-dev/aiseed-migration-kit、aiseed-dev/cf-publish)は、それぞれのフォルダーで
-  参照しています。aiai pro はそれらを写しません
+手順と設定は公式の説明書で確かめた物で、サーバーに入れて動かしてはいません。動かして確かめたのは
+ERPNext だけです(2026-10-06、[erpnext](erpnext/))。動かした人の報告で直します。
 
 ## ライセンス
 
