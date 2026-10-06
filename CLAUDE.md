@@ -57,7 +57,7 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
 | `server/`、`dodai/`、`ninshou/`、`code/`、`bunsho/`、`mail/`、`kaigi/`、`web/`、`api/`、`jouhou/`、`ai/` | aiseed.dev の自立編の順のスキル。見本の設定と `api/sample/main.py` |
 | `bunseki/` | 表のデータから予測する(Polars、scikit-learn、LightGBM、SHAP)。`yosoku.py` |
 | `kaiin/`、`tsuuchi/`、`renraku/`、`honnin/`、`kagi/`、`kanshi/`、`network/` | 事業用のアプリの部品(会員、通知、メッセージ、本人確認、鍵、VLM 監視、ネットワーク)。認証は `ninshou/` に書き足した |
-| `erpnext/` | ERP とは何かと、ERPNext を自分の PC で動かす見本。`README.md` にライセンスの決まり |
+| `erpnext/` | ERP とは何かと、ERPNext を自分の PC で動かす手順。`aiai_ja/` は訳の追加と修正の Frappe アプリ。`README.md` にライセンスの決まり |
 | `tools/kakunin.py` | 出典の URL と確かめた日を集め、確かめ直す物を出す。aiai と同じ |
 | `HOUKOKU.md`、`.github/ISSUE_TEMPLATE/` | 報告のしかたと Issue のひな形 |
 
@@ -69,9 +69,11 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
   scikit-learn など)が入っていない。conda で入れて動かすには、発注者の許しが要る
 - Cal.com の自分で置く版は cal.diy(MIT)に分かれ、「個人の、本番でない利用に強く勧める」と
   書いてある。使うかどうかは会社が決める形にした
-- ERPNext は、maihatch/erpnext-ja-starter(MIT)を元に、自分の PC で一人が使う見本
-  (`erpnext/Dockerfile`、`compose.yaml`)を作った(2026-09-29)。動かしていない。スターターの
-  ja.csv の約 35% は ERPNext version-13 の翻訳(GPL-3.0)と同じで、出どころは作者に聞いていない
+- ERPNext は、Docker を使わずに(MariaDB 10.11、conda、bench)この PC で動かして確かめた
+  (2026-10-06)。訳は `erpnext/aiai_ja/` で足して直す(用語集 `yougo.csv` にそろえる)。帳票の
+  ひな形に英語が直に書かれた所は、日本の帳票を作るときに直す。Docker の見本は動かしていない。
+  スターターの ja.csv の約 35% は ERPNext version-13 の翻訳(GPL-3.0)と同じで、出どころは作者に
+  聞いていない
 - ntfy は、VLM 監視と鍵のスキルに 1 行だけ添えた。サーバーへの置き方と、iPhone の上流
   (ntfy.sh)の設定は、時間ができたら足す(2026-10-06)
 - GitHub のリポジトリ(aiseed-dev/aiai-pro、公開)は発注者が作る。作ったらラベルを作る

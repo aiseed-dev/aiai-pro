@@ -1,0 +1,181 @@
+英語,日本語
+Accounts Payable,買掛金
+Accounts Receivable,売掛金
+Accrued Expenses,未払費用
+Accumulated Depreciation,減価償却累計額
+Administrative Expenses,一般管理費
+Application of Funds (Assets),資産
+Asset Received But Not Billed,未請求の受入資産
+Bank Accounts,預金
+Bank Charges,支払手数料
+Bank Overdraft Account,当座借越
+Buildings,建物
+CWIP Account,建設仮勘定
+Capital Equipment,設備
+Capital Stock,資本金
+Cash,現金
+Cash In Hand,手許現金
+Commission on Sales,販売手数料
+Cost of Goods Sold,売上原価
+Creditors,買掛金
+Current Assets,流動資産
+Current Liabilities,流動負債
+Customer Advances,前受金
+Debtors,売掛金
+Depreciation,減価償却費
+Direct Expenses,直接費
+Direct Income,営業収益
+Dividends Paid,支払配当金
+Duties and Taxes,租税公課
+Earnest Money,手付金
+Electronic Equipment,電子機器
+Employee Advances,従業員仮払金
+Employee Benefits Obligation,退職給付引当金
+Entertainment Expenses,交際費
+Equity,純資産
+Exchange Gain/Loss,為替差損益
+Expenses,費用
+Expenses Included In Asset Valuation,資産評価に含める費用
+Expenses Included In Valuation,評価に含める費用
+Fixed Assets,固定資産
+Freight and Forwarding Charges,荷造運賃
+Furniture and Fixtures,器具備品
+Gain/Loss on Asset Disposal,固定資産売却損益
+Impairment,減損損失
+Income,収益
+Indirect Expenses,間接費
+Indirect Income,営業外収益
+Interest Expense,支払利息
+Interest Income,受取利息
+Interest on Fixed Deposits,定期預金利息
+Investments,投資
+Legal Expenses,支払報酬
+Loans (Liabilities),借入金
+Loans and Advances (Assets),貸付金
+Long-term Provisions,固定負債の引当金
+Marketing Expenses,広告宣伝費
+Miscellaneous Expenses,雑費
+Non-Current Liabilities,固定負債
+Office Equipment,事務機器
+Office Maintenance Expenses,修繕費
+Office Rent,地代家賃
+Opening Balance Equity,開始残高
+Payroll Payable,未払給与
+Plants and Machineries,機械装置
+Postal Expenses,通信費
+Prepaid Expenses,前払費用
+Print and Stationery,事務用品費
+Retained Earnings,利益剰余金
+Revaluation Surplus,再評価差額金
+Round Off,端数処理
+Salary,給与
+Sales,売上
+Sales Expenses,販売費
+Secured Loans,有担保借入金
+Securities and Deposits,差入保証金
+Service,役務収益
+Short-term Investments,短期投資
+Short-term Provisions,流動負債の引当金
+Software,ソフトウェア
+Source of Funds (Liabilities),負債
+Stock Adjustment,在庫調整
+Stock Assets,棚卸資産
+Stock Expenses,在庫の費用
+Stock In Hand,商品
+Stock Liabilities,在庫の負債
+Stock Received But Not Billed,未請求の入荷
+Tax Assets,仮払税金
+Tax Expense,法人税等
+Telephone Expenses,通信費
+Temporary Accounts,仮勘定
+Temporary Opening,開始仮勘定
+Travel Expenses,旅費交通費
+Unsecured Loans,無担保借入金
+Utility Expenses,水道光熱費
+Write Off,貸倒損失
+Submit,確定
+Submitted,確定済み
+Cancel,取消
+Cancelled,取消済み
+Amend,修正
+Draft,下書き
+Save,保存
+Delete,削除
+Duplicate,複製
+Print,印刷
+Quotation,見積
+Sales Order,受注
+Delivery Note,納品書
+Sales Invoice,請求書
+Purchase Order,発注
+Purchase Receipt,入荷
+Purchase Invoice,仕入請求書
+Material Request,資材依頼
+Supplier Quotation,仕入先見積
+Request for Quotation,見積依頼
+Journal Entry,仕訳
+Payment Entry,入出金
+Stock Entry,在庫移動
+Payment Request,支払依頼
+Customer,顧客
+Supplier,仕入先
+Item,品目
+Item Group,品目グループ
+Warehouse,倉庫
+Company,会社
+Account,勘定科目
+Chart of Accounts,勘定科目表
+Fiscal Year,会計年度
+Cost Center,コストセンター
+Posting Date,計上日
+Due Date,支払期日
+Valid Till,有効期限
+Grand Total,合計
+Net Total,税抜合計
+Rounded Total,端数処理後の合計
+Outstanding Amount,未決済額
+Paid Amount,支払額
+Total Taxes and Charges,税と諸費用の合計
+Rate,単価
+Amount,金額
+Qty,数量
+Quantity,数量
+UOM,単位
+Stock UOM,在庫単位
+Lead,見込み客
+Opportunity,商談
+Territory,地域
+Customer Group,顧客グループ
+Price List,価格表
+Batch,ロット
+Serial No,シリアル番号
+Bill to,請求先
+Ship to,送り先
+Customer Name,顧客名
+Supplier Name,仕入先名
+Tax Category,税区分
+Sales Taxes and Charges Template,販売の税と諸費用のテンプレート
+Item Tax Template,品目の税テンプレート
+Work Order,製造指図
+Job Card,作業カード
+BOM,部品表
+Product Bundle,セット品
+Landed Cost Voucher,仕入諸掛伝票
+Stock Reconciliation,在庫棚卸
+Payment Reconciliation,入金消込
+Secondary Item,副産物品目
+Valuation Rate,評価単価
+Event,イベント
+Print Format,印刷書式
+Role,ロール
+Permission,権限
+Communication,やり取り
+Tax Withholding,源泉徴収
+Material Transfer,資材移動
+Serial and Batch Bundle,シリアル番号とロットのバンドル
+Stock Reservation Entry,在庫引当
+Period Closing Voucher,期末締め伝票
+Finished Good,完成品
+WIP Warehouse,仕掛品倉庫
+Subcontracting Order,外注加工指示
+Subcontracting Inward Order,受託加工指示

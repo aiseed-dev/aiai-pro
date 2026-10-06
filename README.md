@@ -167,11 +167,15 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | AnythingLLM | v1.16.2 | MIT | https://github.com/Mintplex-Labs/anything-llm/releases |
 | North Mini Code 1.0(Cohere) | 30B(3B が動く)MoE | Apache-2.0 | https://docs.cohere.com/docs/north-mini-code-1.0 |
 | scikit-learn、LightGBM、SHAP | 1.9.1、4.7.0、0.52.0(conda-forge) | BSD-3-Clause、MIT、MIT | https://anaconda.org/conda-forge/ |
-| ERPNext、Frappe Framework | v16.36.1、v16.35.0(画像 `frappe/erpnext:v16.36.1` に入っている組) | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
-| frappe_docker | v3.2.2 | MIT | https://github.com/frappe/frappe_docker/releases |
+| ERPNext、Frappe Framework | v16.36.1、v16.35.0(2026-10-06 にこの組で動かした) | GPL-3.0、MIT | https://github.com/frappe/erpnext/releases 、https://github.com/frappe/frappe/releases |
+| frappe-bench(ERPNext を組んで動かす道具) | 5.31.0 | GPL-3.0 | https://pypi.org/project/frappe-bench/ |
+| MariaDB(ERPNext の DB、Ubuntu 24.04 の物) | 10.11.14 | GPL-2.0 | https://packages.ubuntu.com/noble/mariadb-server |
+| Redis(ERPNext のキュー、conda-forge の redis-server) | 7.2.11 | BSD-3-Clause | https://anaconda.org/conda-forge/redis-server |
+| wkhtmltopdf(ERPNext の PDF) | 0.12.6.1-3 | LGPL-3.0 | https://github.com/wkhtmltopdf/packaging/releases |
 | erpnext-ja-starter(ERPNext の日本語) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
-| MariaDB、Redis(ERPNext の DB とキュー) | 11.8、8.6 | GPL-2.0、AGPL-3.0 を選べる | https://github.com/frappe/frappe_docker/tree/main/overrides |
-| Noto CJK(fonts-noto-cjk、PDF の日本語) | 1:20220127(Debian bookworm) | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
+| aiai_ja(このリポジトリの ERPNext の訳の追加と修正) | 0.1.0 | AGPL-3.0-or-later、訳は CC BY 4.0 | [erpnext/aiai_ja](erpnext/aiai_ja/) |
+| frappe_docker(Docker で動かす見本だけに使う) | v3.2.2 | MIT | https://github.com/frappe/frappe_docker/releases |
+| Noto CJK(fonts-noto-cjk、PDF の日本語) | Ubuntu と Debian の物 | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
 | pywebpush | 2.5.0 | MPL-2.0 | https://pypi.org/project/pywebpush/ |
 | ntfy | v2.28.0 | Apache-2.0 と GPL-2.0 | https://github.com/binwiederhier/ntfy |
 | Home Assistant | 2026.9.4 | Apache-2.0 | https://github.com/home-assistant/core |
@@ -192,6 +196,10 @@ ERPNext の画像に入っている Frappe の版は、画像の由来の記録(
 - ここにある手順と設定は、各プロジェクトの公式の説明書から書き、URL と確かめた日を付けました。
   このリポジトリの中では、まだ実際にサーバーに入れて動かしていません。動かした人の報告で
   直します
+- ERPNext は、2026-10-06 に、Ubuntu 24.04 の PC で Docker を使わずに動かしました(MariaDB 10.11、
+  conda の環境、bench)。設定のウィザード、見積から請求までの仕訳、見積の PDF の日本語を確かめました。
+  訳は [erpnext/aiai_ja](erpnext/aiai_ja/) で足し、直しています。帳票のひな形に英語が直に書かれている
+  所(見積の題、顧客名、請求先)は、まだ英語です
 - `api/sample/main.py` と `bunseki/yosoku.py` は動く例として書きましたが、この環境には
   部品(fastapi、polars、scikit-learn など)が入っていないので、まだ動かしていません。
   文法の確かめ(`python -m py_compile`)だけしています
