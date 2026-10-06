@@ -24,6 +24,15 @@ OSS と AI で自分の側に置くための物です。
 リポジトリのスキル(`SKILL.md`)です。会社の人は、何を自分の側に置くか、誰が何を見てよいか、
 古い物をいつ止めるかを決めます。AI は、それを読んで、設定とコードを書きます。
 
+企業の基幹システムは、AI で扱いやすい物です。受注、在庫、請求の計算のように、仕事の決まりが
+はっきりしていて、データも表の形にそろっています。AI は、決まりを読んでコードを書き直し、
+古い仕組みと同じ入力で同じ答えが出るかを比べて確かめられます([api](api/))。ネットワークと
+Web の構築も同じです。DNS、ファイアウォール、リバースプロキシ、HTTPS、静的なサイトは、
+公式の説明書に決まった形があり、設定はテキストで書けて、つながるかどうかで確かめられます
+([server](server/)、[web](web/))。手間がかかるのは、
+むしろ事業用のアプリにいつも出てくる部品(認証、本人確認、顔認識、メッセージ)です。法令と
+他人の情報が絡むので、決まりを条文で確かめることが値打ちになります。
+
 このリポジトリにあるコードと設定は、動く例です。写して使う物ではなく、会社の AI がスキルを
 読んで作り直す物です。土台にした aiseed.dev の導入編は、AI が最も難しいコーディングの問題を
 解くこと、ソフトウェアエンジニアの仕事を AI がすること、人の役割は何を作るかを決める
@@ -87,6 +96,21 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | 11 | [bunseki](bunseki/) | Polars、scikit-learn、LightGBM、SHAP | 表のデータから予測する SaaS |
 | 12 | [erpnext](erpnext/) | ERP とは何かを知り、ERPNext を自分の PC で動かす | (使えると分かってから考える) |
 
+## 事業用のアプリの部品
+
+事業用のアプリにいつも出てくる部品です。aiseed.dev の自立編にはない物で、順番はありません。
+要る物から使います。認証は [ninshou](ninshou/) の「会員(お客さん)のサインイン」です。
+
+| フォルダー | 中身 | 使う物 |
+|---|---|---|
+| [kaiin](kaiin/) | 会員を集めて預かる(招待、同意、本人が見て消せる、漏えいの報告) | aiai の soudan、PocketBase |
+| [tsuuchi](tsuuchi/) | 通知(取引のメールと Web Push。広告は入れない) | Stalwart、pywebpush |
+| [renraku](renraku/) | メッセージ(会社と会員。会員どうしは届出が要ることがある) | PocketBase |
+| [honnin](honnin/) | 本人確認(民泊と簡易宿所の宿泊者名簿が中心) | PocketBase、Jitsi |
+| [kagi](kagi/) | 鍵(スマートロックで期間を決めた鍵を出して消す) | Matter と Home Assistant、各社の API |
+| [kanshi](kanshi/) | 住宅と空き家の VLM 監視と顔認識 | Frigate、Ollama、OpenCV Zoo |
+| [network](network/) | Linux の PC をルーターにする | systemd-networkd、nftables、dnsmasq、Unbound、WireGuard、hostapd |
+
 ## 使い方
 
 1. このリポジトリを手元に取り、スキルを読める AI を用意します
@@ -132,7 +156,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | PocketBase | v0.40.4 | MIT | https://github.com/pocketbase/pocketbase/releases |
 | Forgejo | v16.0.5 | GPL-3.0 | https://codeberg.org/forgejo/forgejo/releases |
 | ONLYOFFICE Docs | v9.4.0 | AGPL-3.0 | https://github.com/ONLYOFFICE/DocumentServer/releases |
-| Stalwart | v0.16.24 | AGPL-3.0 | https://github.com/stalwartlabs/stalwart/releases |
+| Stalwart | v0.16.24 | AGPL-3.0(独自の SELv2 との二重) | https://github.com/stalwartlabs/stalwart/releases |
 | Jitsi Meet(docker-jitsi-meet) | stable-11248 | Apache-2.0 | https://github.com/jitsi/docker-jitsi-meet/releases |
 | Cal.diy | (calcom/cal.diy) | MIT | https://github.com/calcom/cal.diy |
 | BigBlueButton | v3.0.37 | LGPL-3.0 | https://github.com/bigbluebutton/bigbluebutton/releases |
@@ -148,6 +172,14 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | erpnext-ja-starter(ERPNext の日本語) | コミット b494234(2026-04-25) | MIT | https://github.com/maihatch/erpnext-ja-starter |
 | MariaDB、Redis(ERPNext の DB とキュー) | 11.8、8.6 | GPL-2.0、AGPL-3.0 を選べる | https://github.com/frappe/frappe_docker/tree/main/overrides |
 | Noto CJK(fonts-noto-cjk、PDF の日本語) | 1:20220127(Debian bookworm) | OFL-1.1 | https://packages.debian.org/bookworm/fonts-noto-cjk |
+| pywebpush | 2.5.0 | MPL-2.0 | https://pypi.org/project/pywebpush/ |
+| ntfy | v2.28.0 | Apache-2.0 と GPL-2.0 | https://github.com/binwiederhier/ntfy |
+| Home Assistant | 2026.9.4 | Apache-2.0 | https://github.com/home-assistant/core |
+| Frigate | v0.18.0 | MIT | https://github.com/blakeblackshear/frigate |
+| OpenCV Zoo の YuNet、SFace | (opencv/opencv_zoo) | MIT、Apache-2.0 | https://github.com/opencv/opencv_zoo |
+| nftables、systemd | 1.1.7、v262 | GPL、LGPL-2.1 | https://www.netfilter.org/projects/nftables/ 、https://github.com/systemd/systemd |
+| dnsmasq、Unbound | 2.93、1.26.1 | GPL、BSD-3-Clause | https://thekelleys.org.uk/dnsmasq/doc.html 、https://github.com/NLnetLabs/unbound |
+| WireGuard(wireguard-tools)、hostapd | v1.0.20260223、2.12 | GPL-2.0、BSD | https://www.wireguard.com/install/ 、https://w1.fi/hostapd/ |
 
 BigBlueButton のライセンスは、リポジトリの LICENSE を GitHub の API で確かめました。
 

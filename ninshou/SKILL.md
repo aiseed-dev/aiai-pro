@@ -1,6 +1,6 @@
 ---
 name: aiai-pro-ninshou
-description: 会社の認証を PocketBase に集めるのを手伝う。社員は Apple ID か Google ID でサインインし、自分で作るアプリ(API、画面)はみな PocketBase の札(トークン)で人を確かめる。OSS の道具(Forgejo、Stalwart など)の認証は別に持つ。
+description: 会社の認証を PocketBase に集めるのを手伝う。社員は Apple ID か Google ID でサインインし、自分で作るアプリ(API、画面)はみな PocketBase の札(トークン)で人を確かめる。事業用のアプリの会員(お客さん)のサインインも同じ PocketBase で受ける。OSS の道具(Forgejo、Stalwart など)の認証は別に持つ。
 ---
 
 # 門番を立てる(認証)
@@ -10,6 +10,10 @@ description: 会社の認証を PocketBase に集めるのを手伝う。社員�
 
 ## 守ること
 
+- PocketBase は 1.0 前です。公式の説明書は、v1.0.0 までは前の版との互換を保証せず、changelog を
+  読んで手で移行してよいのでなければ、本番の重要なアプリにはまだ勧めない、と書いています。
+  FAQ は、ボランティアの個人のプロジェクトで、説明書を読まずに AI の道具だけに頼るなら使わないで、
+  とも書いています。版を上げる前に、changelog を会社の人が読みます。このことを最初に会社に伝えます
 - Apple と Google のクライアント ID とシークレット、PocketBase の管理者(superuser)の
   パスワードは、会社の人が作って入れます。会話にも、リポジトリにも入れません
 - 社員の名前とメールアドレスの一覧を、AI への依頼に貼らないでください。人数と、
@@ -67,12 +71,42 @@ description: 会社の認証を PocketBase に集めるのを手伝う。社員�
 7. 古い認証(Entra ID、Google Workspace)と並べて動かし、新しいアプリから順に
    PocketBase に付け替えます。全部を一度に替えません
 
+## 会員(お客さん)のサインイン
+
+事業用のアプリの会員は、社員と別の auth のコレクション(`members`)に置きます。
+会員の情報の扱いは [kaiin](../kaiin/) に書いています。
+
+1. サインインの方法を決めます。PocketBase v0.40.4 で使えるのは、パスワード、メールで届く
+   一時パスワード(OTP)、OAuth2、MFA(2 つの方法の組み合わせ)です
+   * OAuth2 には Apple、Google、Microsoft などが入っています。LINE の専用の提供者はありません
+     (汎用の OIDC の枠でつなげるかは確かめていません)
+   * パスキー(WebAuthn)はありません。作者は、優先度がとても低いと書いています
+   * OTP は既定で無効です。数字なので推測されうるとして、公式は重要なアプリでは MFA と
+     組み合わせるよう書いています
+2. 守りを入れます。既定で無効な物があります
+   * rate limiter を有効にします(新しく入れたときも無効です)
+   * `authRule` に `verified = true` を入れると、メールを確かめた人だけがサインインできます
+   * 新しい機器からのサインインを知らせるメール(Auth alert)は既定で有効です
+   * 札の有効期間は既定で 5 日です。退会や締め出しのときは、その人の `tokenKey` を変えると、
+     出した札がすべて使えなくなります
+3. メールを日本語にします。確認、パスワードの再設定、OTP のテンプレートはコレクションごとに
+   あり、既定は英語です([tsuuchi](../tsuuchi/))
+4. 画面は自分で作ります。PocketBase にはサインインの画面が付いていません。OAuth2 の戻り先は
+   `https://auth.example.jp/api/oauth2-redirect` です
+5. 役割を分けます。会員が自分の役割を書き換えられないよう、API ルールに
+   `@request.body.role:isset = false` を足します
+
 ## 出典
 
 - PocketBase「Going to production」(https://pocketbase.io/docs/going-to-production/)、
   「Authentication」(https://pocketbase.io/docs/authentication/)、
   「API Records」(https://pocketbase.io/docs/api-records/)。v0.40.4、MIT。
   OAuth2 の提供者の一覧は https://github.com/pocketbase/pocketbase/tree/master/tools/auth
+- PocketBase の説明書の最初の注意(https://pocketbase.io/docs/)と FAQ(https://pocketbase.io/faq/)。
+  パスキーについての作者の書き込み
+  (https://github.com/pocketbase/pocketbase/issues/6800#issuecomment-3341367042)。
+  認証の設定の既定の値(https://raw.githubusercontent.com/pocketbase/pocketbase/v0.40.4/core/collection_model_auth_options.go)。
+  2026-09-29 に確かめました
 - Forgejo「OAuth2 provider」(https://forgejo.org/docs/latest/user/authentication/oauth2-provider/)。
   「OAuth2 scopes are not yet implemented」とあります
 - aiseed-dev/workspace(蔵)の README(https://github.com/aiseed-dev/workspace)

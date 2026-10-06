@@ -21,7 +21,10 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
   Microsoft ID は移る間の選択肢とだけ書く。PocketBase は OpenID Connect の提供者にならないので、
   OSS の道具の認証はそれぞれが持つ(2026-09-28 に確かめた)
 - 使う OSS は、OSI の認めたライセンスの物にする。Open WebUI と LobeChat は条件を足した
-  ライセンスなので使わず、AI の画面は AnythingLLM(MIT)にする
+  ライセンスなので使わず、AI の画面は AnythingLLM(MIT)にする。VLM 監視(`kanshi/`)の
+  モデルは、OSI でなくてよい。住宅で住人が使うのは商用でないので、問題は少ない。会社が空き家の
+  見守りや管理の仕事として使うときは、商用で使えるかと、監視や顔認識を禁じる条項がないかを確かめる
+  (2026-09-29 に決めた)
 - コードの開発は Claude でよい。端末で動くコーディングエージェントを前提にしない。
   コードと設定は AI が下書きし、コマンドは会社の人が動かす
 - 秘密の値は、AI への依頼にもリポジトリにも入れない。README に具体的に書く(API のトークンと鍵、
@@ -53,6 +56,7 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
 |---|---|
 | `server/`、`dodai/`、`ninshou/`、`code/`、`bunsho/`、`mail/`、`kaigi/`、`web/`、`api/`、`jouhou/`、`ai/` | aiseed.dev の自立編の順のスキル。見本の設定と `api/sample/main.py` |
 | `bunseki/` | 表のデータから予測する(Polars、scikit-learn、LightGBM、SHAP)。`yosoku.py` |
+| `kaiin/`、`tsuuchi/`、`renraku/`、`honnin/`、`kagi/`、`kanshi/`、`network/` | 事業用のアプリの部品(会員、通知、メッセージ、本人確認、鍵、VLM 監視、ネットワーク)。認証は `ninshou/` に書き足した |
 | `erpnext/` | ERP とは何かと、ERPNext を自分の PC で動かす見本。`README.md` にライセンスの決まり |
 | `tools/kakunin.py` | 出典の URL と確かめた日を集め、確かめ直す物を出す。aiai と同じ |
 | `HOUKOKU.md`、`.github/ISSUE_TEMPLATE/` | 報告のしかたと Issue のひな形 |
@@ -68,4 +72,6 @@ OSS と AI で自分の側に置くためのスキルを置くリポジトリで
 - ERPNext は、maihatch/erpnext-ja-starter(MIT)を元に、自分の PC で一人が使う見本
   (`erpnext/Dockerfile`、`compose.yaml`)を作った(2026-09-29)。動かしていない。スターターの
   ja.csv の約 35% は ERPNext version-13 の翻訳(GPL-3.0)と同じで、出どころは作者に聞いていない
+- ntfy は、VLM 監視と鍵のスキルに 1 行だけ添えた。サーバーへの置き方と、iPhone の上流
+  (ntfy.sh)の設定は、時間ができたら足す(2026-10-06)
 - GitHub のリポジトリ(aiseed-dev/aiai-pro、公開)は発注者が作る。作ったらラベルを作る
