@@ -78,7 +78,7 @@ description: 民泊や小さな宿、事務所の扉に、スマートロック(
   Home Assistant の Matter のサービス
   (https://github.com/home-assistant/core/blob/2026.9.4/homeassistant/components/matter/services.yaml)、
   Matter の説明(https://github.com/home-assistant/home-assistant.io/blob/current/source/_integrations/matter.markdown)。
-  python-matter-server(https://github.com/home-assistant-libs/python-matter-server)、matterjs-server
+  python-matter-server(https://github.com/matter-js/python-matter-server)、matterjs-server
   (https://github.com/matter-js/matterjs-server)
 - CSA「Introducing Aliro 1.0」
   (https://csa-iot.org/newsroom/introducing-aliro-1-0-a-unified-standard-to-transform-the-access-control-ecosystem/)、

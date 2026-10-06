@@ -43,15 +43,15 @@ description: 事業用のアプリから会員に、取引の通知(招待、予
 
 ## 出典
 
-- Google「Email sender guidelines」(https://support.google.com/a/answer/81126)。Yahoo
+- Google「Email sender guidelines」(https://support.google.com/mail/answer/81126)。Yahoo
   「Sender Best Practices」(https://senders.yahooinc.com/best-practices/)
 - 総務省・消費者庁「特定電子メールの送信等に関するガイドライン」
   (https://www.soumu.go.jp/main_sosiki/joho_tsusin/d_syohi/pdf/m_mail_081114_1.pdf)
 - PocketBase「Sending emails」(https://pocketbase.io/docs/js-sending-emails/)、
   「Job scheduling」(https://pocketbase.io/docs/js-jobs-scheduling/)。v0.40.4
 - Stalwart(https://github.com/stalwartlabs/stalwart)v0.16.24
-- RFC 8030(https://www.rfc-editor.org/rfc/rfc8030)、RFC 8291(https://www.rfc-editor.org/rfc/rfc8291)、
-  RFC 8292(https://www.rfc-editor.org/rfc/rfc8292)。WebKit「Web Push for Web Apps on iOS and iPadOS」
+- RFC 8030(https://www.rfc-editor.org/info/rfc8030)、RFC 8291(https://www.rfc-editor.org/info/rfc8291)、
+  RFC 8292(https://www.rfc-editor.org/info/rfc8292)。WebKit「Web Push for Web Apps on iOS and iPadOS」
   (https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/)。pywebpush
   (https://pypi.org/pypi/pywebpush/json)
 

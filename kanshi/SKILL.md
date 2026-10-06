@@ -120,7 +120,7 @@ description: 個人の住宅と空き家、集合住宅の共用玄関を、カ�
   https://huggingface.co/Qwen/Qwen3.6-27B、https://huggingface.co/Qwen/Qwen3.5-27B、
   https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct)と、Qwen License
   (https://huggingface.co/Qwen/Qwen2.5-VL-72B-Instruct/blob/main/LICENSE)
-- Gemma 4 のライセンス(https://ai.google.dev/gemma/docs/gemma_4_license)
+- Gemma 4 のライセンス(https://ai.google.dev/gemma/apache_2)
 - NVIDIA Open Model License(https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/)、
   Trustworthy AI terms(https://www.nvidia.com/en-us/agreements/trustworthy-ai/terms/)、
   Cosmos-Reason2(https://huggingface.co/nvidia/Cosmos-Reason2-32B)、Nemotron Nano VL
@@ -131,7 +131,7 @@ description: 個人の住宅と空き家、集合住宅の共用玄関を、カ�
   方針(https://policies.google.com/terms/generative-ai/use-policy)。Anthropic の利用ポリシー
   (https://www.anthropic.com/legal/aup)と商用版の学習(https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training)。
   OpenAI のデータの扱い(https://developers.openai.com/api/docs/guides/your-data)。Anthropic の
-  OpenAI SDK 互換(https://platform.claude.com/docs/en/api/openai-sdk)。2026-10-06 に確かめました
+  OpenAI SDK 互換(https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk)。2026-10-06 に確かめました
 - ntfy(https://docs.ntfy.sh/、https://github.com/binwiederhier/ntfy)v2.28.0、Apache-2.0 と GPL-2.0
 
 2026-10-06 に見直しました(条文とライセンスは 2026-09-29 に確かめた)。

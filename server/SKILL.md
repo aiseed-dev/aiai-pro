@@ -85,10 +85,6 @@ description: 会社が自分の道具を置くサーバーを用意するのを�
    1 度は実際に確かめます
 8. 記録を残します。何をいつ入れたか、どの版か、何を変えたかを、リポジトリの `README.md` か
    `CHANGELOG.md` に書きます。次に入れ替えるときに、AI がそれを読んで作り直せます
-9. 総務省の「国民のためのサイバーセキュリティサイト」にある、システム管理者の対策
-   (ソフトウェアの最新化と脆弱性管理、アカウント管理、アクセス制御、監査ログの管理、
-   バックアップの管理、インシデントレスポンスの体制)を、会社の人と 1 つずつ見て、
-   誰がするかを決めます
 
 ## 出典
 
@@ -99,8 +95,6 @@ description: 会社が自分の道具を置くサーバーを用意するのを�
   公開した番号が ufw を通らないことは、ここに書いてあります
 - Caddy「Install」(https://caddyserver.com/docs/install)、「Reverse proxy quick-start」
   (https://caddyserver.com/docs/quick-starts/reverse-proxy)
-- 総務省「国民のためのサイバーセキュリティサイト」システムを管理する人向けの対策
-  (https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/security/business/admin/)
 - aiseed.dev「Microsoft と Google から自立する」
   (https://aiseed.dev/ai-native-ways/software/independence/)、「門番を立てる」
   (https://aiseed.dev/ai-native-ways/software/auth/)。CC BY 4.0

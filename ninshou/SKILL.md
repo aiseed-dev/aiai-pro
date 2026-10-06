@@ -1,6 +1,6 @@
 ---
 name: aiai-pro-ninshou
-description: 会社の認証を PocketBase に集めるのを手伝う。社員は Apple ID か Google ID でサインインし、自分で作るアプリ(API、画面)はみな PocketBase の札(トークン)で人を確かめる。事業用のアプリの会員(お客さん)のサインインも同じ PocketBase で受ける。OSS の道具(Forgejo、Stalwart など)の認証は別に持つ。
+description: 会社の認証を PocketBase に集めるのを手伝う。社員は Apple ID か Google ID でサインインし、自分で作るアプリ(API、画面)はみな PocketBase の札(トークン)で人を確かめる。事業用のアプリの会員(お客さん)のサインインも同じ PocketBase で受ける。OSS の道具(Forgejo、Stalwart など)の認証は別に持つ。最初に、社内に認証を管理できる人がいるかを確かめ、管理者の ID と、ドメイン、外部との接続、区画の分離を点検する。
 ---
 
 # 門番を立てる(認証)
@@ -28,6 +28,63 @@ description: 会社の認証を PocketBase に集めるのを手伝う。社員�
   Forgejo が OpenID Connect の提供者になれます(ただし scope が未実装で、札で何でも
   できることに注意が要ります)。aiseed.dev の自立編には「認証を 1 つに」とありますが、
   aiai pro では、自分で作るアプリの認証を PocketBase に集める、と読み替えています
+
+## 管理できる人がいるか(最初に確かめる)
+
+認証を管理できる人が社内にいなければ、サイバー攻撃は防げません。ほかの手順の前に、これを
+確かめます。
+
+1. 管理者の ID を書き出します。ドメインの登録(指定事業者)、DNS、サーバー(SSH の鍵と root)、
+   PocketBase の superuser、Forgejo、Stalwart、Apple と Google の開発者のアカウント、回線と
+   ルーター、バックアップの置き場、会社が使う外のサービス。何の管理者か、社内の誰が持つか、
+   二要素の認証があるか、最後に確かめた日を、会社のリポジトリ([code](../code/))に書きます。
+   パスワードと鍵そのものは書きません
+2. それぞれを、社内の人が持っているかを確かめます。辞めた人や外の業者だけが持っている物、
+   1 人だけが持っている物は、会社の人に伝えます。どうするかは会社が決めます。社内に管理できる
+   人がいなければ、それを最初に決めることになります
+3. 管理者の ID には、パスキー(W3C の WebAuthn)か、時刻で変わる確認の番号(TOTP、RFC 6238)を
+   付けます。JPRS は、安易なパスワードのせいでドメインの登録情報や DNS を書き換えられた事例を
+   挙げ、二要素の認証があれば使うよう書いています
+4. 人が辞めたり担当を替えたりしたら、その日のうちに、その人の管理者の ID を外します
+5. AI がするのは、点検のコマンドと、結果の読み方の下書きです。動かして結果を見るのは、
+   管理できる社内の人です。管理者のパスワードと鍵は、AI に渡しません
+
+## 点検する
+
+管理できる人が、決めた間隔で確かめます。
+
+1. 会社のドメイン
+   * JPRS の Whois(`https://whois.jprs.jp/`)で、登録者、連絡先、有効期限を見ます。連絡先が
+     古いと、変更の知らせが届きません。JP ドメイン名は、廃止しなければ 1 年ごとに自動で
+     更新されます。廃止したドメイン名は、一定の期間の後に第三者が登録でき、メールアドレスや
+     Web の URL として悪用されえます
+   * 指定事業者がレジストリロック(登録情報の変更、移転、廃止を止める仕組み)を扱っていれば、
+     使うかを決めます
+   * DNS を `dig` で確かめます。NS のサーバーが、そのゾーンを正しく返すか(返さない状態は
+     lame delegation で、乗っ取りの元になります)。使うのをやめたサービスを指す CNAME や NS が
+     残っていないか(サブドメインの乗っ取りの元になります)。メールの SPF、DKIM、DMARC と、
+     証明書を出してよい認証局を決める CAA、DNSSEC の署名
+
+     ```
+     dig +short NS example.jp
+     dig @NSのサーバー example.jp SOA
+     dig +short TXT example.jp
+     dig +short TXT _dmarc.example.jp
+     dig +short CAA example.jp
+     dig +dnssec example.jp SOA
+     ```
+
+2. 外部との接続
+   * 会社の外の回線(スマートフォンのテザリングや、借りたサーバー)から、会社の外向きの住所を
+     RustScan(GPL-3.0)で調べ、開いているのが決めた口(Caddy の 80 と 443、メール、VPN など)
+     だけかを確かめます。Nmap はライセンス(NPSL)が OSI の一覧に無いので使いません
+   * Certificate Transparency(RFC 9162)のログで、会社のドメインで出された証明書を見ます。
+     知らない名前の証明書があれば、使っていないサーバーかサービスが残っています
+   * 契約しているプロバイダーから、NICT の NOTICE(推測されやすいパスワードの機器や、古い
+     ファームウェアの機器を調べる取り組み)の知らせが来たら、その機器を確かめます
+3. 区画の分離
+   * 社員、来客、カメラ、錠などの網を分けているなら([network](../network/))、それぞれの網に
+     つないだ機械から、ほかの網に、決めた通信だけが通るかを確かめます
 
 ## 手順
 
@@ -107,6 +164,19 @@ description: 会社の認証を PocketBase に集めるのを手伝う。社員�
   (https://github.com/pocketbase/pocketbase/issues/6800#issuecomment-3341367042)。
   認証の設定の既定の値(https://raw.githubusercontent.com/pocketbase/pocketbase/v0.40.4/core/collection_model_auth_options.go)。
   2026-09-29 に確かめました
+- JPRS「ドメイン名の乗っ取りに関する注意」(https://jprs.jp/registration/domain-hijacking/)、
+  「ドメイン名の廃止に関する注意」(https://jprs.jp/registration/suspended/)、JP ドメイン名の
+  ライフサイクル(https://jprs.jp/about/dom-rule/lifecycle/)、レジストリロック
+  (https://jprs.jp/about/dom-rule/registry-lock/)、用語辞典の lame delegation
+  (https://jprs.jp/glossary/index.php?ID=0176)と Subdomain Takeover
+  (https://jprs.jp/glossary/index.php?ID=0267)。2026-10-06 に確かめました
+- RFC 6238(TOTP、https://www.rfc-editor.org/rfc/rfc6238)、W3C「Web Authentication Level 3」
+  (https://www.w3.org/TR/webauthn-3/)、RFC 7208(SPF)、RFC 6376(DKIM)、RFC 9989(DMARC、
+  https://www.rfc-editor.org/rfc/rfc9989)、RFC 8659(CAA)、RFC 9364(DNSSEC)、RFC 9162(CT、
+  https://www.rfc-editor.org/rfc/rfc9162)
+- BIND 9 の dig(https://bind9.readthedocs.io/en/latest/manpages.html、MPL-2.0)、RustScan
+  (https://github.com/bee-san/RustScan、GPL-3.0)、Nmap のライセンス(https://nmap.org/npsl/)
+- NICT「NOTICE」(https://notice.go.jp/)
 - Forgejo「OAuth2 provider」(https://forgejo.org/docs/latest/user/authentication/oauth2-provider/)。
   「OAuth2 scopes are not yet implemented」とあります
 - aiseed-dev/workspace(蔵)の README(https://github.com/aiseed-dev/workspace)
