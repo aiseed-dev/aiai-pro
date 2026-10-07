@@ -130,6 +130,30 @@ class Kaiseki(unittest.TestCase):
             local.shutdown()
             local.server_close()
 
+    def test_with_no_sites_listed_any_https_site_is_counted_as_its_own_origin(self):
+        anyw = server.serve(0, os.path.join(self.dir.name, "a.db"), set(), "report-secret", "")
+        threading.Thread(target=anyw.serve_forever, daemon=True).start()
+        base = f"http://127.0.0.1:{anyw.server_address[1]}"
+
+        def post(site, origin):
+            req = urllib.request.Request(base + "/v1/hit", method="POST",
+                                         data=json.dumps({"site": site, "path": "/", "vid": VID}).encode())
+            if origin:
+                req.add_header("Origin", origin)
+            with urllib.request.urlopen(req) as r:
+                return r.headers.get("Access-Control-Allow-Origin")
+        try:
+            self.assertEqual(post("shop.example.jp", "https://shop.example.jp"), "https://shop.example.jp")
+            post("weather.time-j.net", "https://shop.example.jp")  # a page naming another site
+            post("shop.example.jp", "http://shop.example.jp")      # not HTTPS
+            post("shop.example.jp", "")                            # no Origin
+            with urllib.request.urlopen(f"{base}/v1/mine?vid={VID}") as r:
+                hits = json.loads(r.read())["hits"]
+            self.assertEqual([h["site"] for h in hits], ["shop.example.jp"])
+        finally:
+            anyw.shutdown()
+            anyw.server_close()
+
     def test_report_needs_its_token(self):
         self.assertEqual(self.call("GET", "/v1/report?site=weather.time-j.net")[0], 403)
 

@@ -12,7 +12,7 @@ member's own server links the ID to the member (POST /v1/link, with a token
 only that server holds), so the member's visits stay together across devices
 and cleared cookies. A person can read and delete what is kept under their ID.
 
-    KAISEKI_DB=kaiseki.db KAISEKI_SITES="weather.time-j.net" \
+    KAISEKI_DB=kaiseki.db [KAISEKI_SITES="weather.time-j.net"] \
     KAISEKI_TOKEN=... KAISEKI_LINK_TOKEN=... python server.py --port 8420
 
 Standard library only (Python 3.11+).
@@ -135,8 +135,13 @@ def text(d, key, limit):
     return str(d.get(key, ""))[:limit]
 
 
-def clean_hit(body, sites):
-    """The record to keep, or None if the body is not one we accept."""
+def clean_hit(body, sites, origin=""):
+    """The record to keep, or None if the body is not one we accept.
+
+    With sites listed, only those sites are kept. With none listed, any HTTPS
+    site is kept, but only when the browser's Origin is that same site, so a
+    page cannot count itself as another site.
+    """
     try:
         d = json.loads(body)
     except ValueError:
@@ -145,7 +150,8 @@ def clean_hit(body, sites):
         return None
     site, path = text(d, "site", 253).lower(), text(d, "path", 301)
     event = text(d, "event", 41) or "view"
-    if site not in sites or not path.startswith("/") or len(path) > 300 or not EVENT.match(event):
+    allowed = site in sites if sites else (HOST.match(site) and origin == f"https://{site}")
+    if not allowed or not path.startswith("/") or len(path) > 300 or not EVENT.match(event):
         return None
     ref = text(d, "referrer", 253).lower()
     try:
@@ -183,7 +189,7 @@ def make_handler(store, sites, token, link_token="", extra_origins=()):
 
         def cors(self):
             origin = self.headers.get("Origin", "")
-            if origin in origins:
+            if origin in origins or (not sites and origin.startswith("https://")):
                 self.send_header("Access-Control-Allow-Origin", origin)
                 self.send_header("Vary", "Origin")
 
@@ -216,7 +222,7 @@ def make_handler(store, sites, token, link_token="", extra_origins=()):
             path = urlsplit(self.path).path
             body = self.body()
             if path == "/v1/hit":
-                hit = clean_hit(body or b"", sites)
+                hit = clean_hit(body or b"", sites, self.headers.get("Origin", ""))
                 if hit:
                     store.add(hit)
                 return self.reply(204)
@@ -271,9 +277,8 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=8420)
     a = p.parse_args()
+    # Empty: any HTTPS site may send. Listed: only those sites
     sites = {s.strip().lower() for s in os.environ.get("KAISEKI_SITES", "").split() if s.strip()}
-    if not sites:
-        raise SystemExit("KAISEKI_SITES に、数えるサイトのホストを空白で区切って書いてください")
     serve(
         a.port,
         os.environ.get("KAISEKI_DB", "kaiseki.db"),

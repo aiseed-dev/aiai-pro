@@ -67,8 +67,9 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
 ## 手順
 
 1. 受け口を置きます。外から HTTPS で届く機械で `server.py` を動かし、Caddy から
-   `analytics.aiseed.dev` で出します([server](../server/))。`KAISEKI_SITES` に数えるサイトの
-   ホストを書きます。手元で試すときだけ、`KAISEKI_ORIGINS` に `http://127.0.0.1:8001` のような
+   `analytics.aiseed.dev` で出します([server](../server/))。`KAISEKI_SITES` を空にすると、
+   HTTPS のどのサイトからでも受けます(記録のサイトが、ブラウザーの送り元と同じときだけ)。書くと、
+   そのサイトに限ります。報告はサイトごとに分かれます。手元で試すときだけ、`KAISEKI_ORIGINS` に `http://127.0.0.1:8001` のような
    送り元を足すと、ページから自分の記録を読めます
 2. 各ページに置きます。`data-own` には、ID を引き継ぐ自分のサイトのドメインを書きます
 
