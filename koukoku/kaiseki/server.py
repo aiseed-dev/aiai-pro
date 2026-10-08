@@ -44,7 +44,9 @@ CREATE TABLE IF NOT EXISTS hits (
   screen TEXT NOT NULL,      -- e.g. 390x844
   ua TEXT NOT NULL,          -- browser and device, as sent
   sid TEXT,                  -- random ID of the visit (one tab session)
-  vid TEXT                   -- random ID of a person who accepted the cookie, else NULL
+  vid TEXT,                  -- random ID of a person who accepted the cookie, else NULL
+  scroll INTEGER,            -- for leave: how far down the page was seen, 0 to 100
+  value TEXT                 -- for an event: a short value the page gives (a search word, a missing path)
 );
 CREATE INDEX IF NOT EXISTS hits_vid ON hits (vid);
 CREATE TABLE IF NOT EXISTS links (
@@ -70,13 +72,20 @@ class Store:
     def __init__(self, path):
         self.db = sqlite3.connect(path, check_same_thread=False)
         self.db.executescript(SCHEMA)
+        # Databases made before scroll and value were added get the columns now
+        have = {r[1] for r in self.db.execute("PRAGMA table_info(hits)")}
+        for col, kind in (("scroll", "INTEGER"), ("value", "TEXT")):
+            if col not in have:
+                self.db.execute(f"ALTER TABLE hits ADD COLUMN {col} {kind}")
+        self.db.commit()
         self.lock = threading.Lock()
 
     def add(self, hit):
         t = now()
+        cols = ("ts", "day") + FIELDS
         row = (t.isoformat(timespec="seconds"), t.date().isoformat()) + tuple(hit[k] for k in FIELDS)
         with self.lock, self.db:
-            self.db.execute(f"INSERT INTO hits VALUES ({', '.join('?' * len(row))})", row)
+            self.db.execute(f"INSERT INTO hits ({', '.join(cols)}) VALUES ({', '.join('?' * len(row))})", row)
 
     def mine(self, vid):
         cols = ("ts",) + FIELDS
@@ -127,7 +136,8 @@ class Store:
         return [dict(zip(("day", "path", "views", "people"), r)) for r in rows]
 
 
-FIELDS = ("site", "path", "event", "seconds", "title", "referrer", "utm", "lang", "tz", "screen", "ua", "sid", "vid")
+FIELDS = ("site", "path", "event", "seconds", "title", "referrer", "utm", "lang", "tz", "screen", "ua", "sid", "vid",
+          "scroll", "value")
 EVENT = re.compile(r"^[a-z0-9_]{1,40}$")
 
 
@@ -154,16 +164,22 @@ def clean_hit(body, sites, origin=""):
     if not allowed or not path.startswith("/") or len(path) > 300 or not EVENT.match(event):
         return None
     ref = text(d, "referrer", 253).lower()
-    try:
-        seconds = int(d.get("seconds")) if event == "leave" else None
-    except (TypeError, ValueError):
-        seconds = None
+    def number(key, top):
+        try:
+            n = int(d.get(key)) if event == "leave" else None
+        except (TypeError, ValueError):
+            return None
+        return n if n is None or 0 <= n <= top else None
+
+    seconds, scroll = number("seconds", 86400), number("scroll", 100)
     ids = {k: text(d, k, 36).lower() for k in ("sid", "vid")}
     return {
         "site": site,
         "path": path,
         "event": event,
-        "seconds": seconds if seconds is None or 0 <= seconds <= 86400 else None,
+        "seconds": seconds,
+        "scroll": scroll,
+        "value": text(d, "value", 100) if event not in ("view", "leave") else "",
         "title": text(d, "title", 200),
         "referrer": ref if HOST.match(ref) and ref != site else "",
         "utm": text(d, "utm", 300),

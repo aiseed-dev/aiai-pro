@@ -43,7 +43,7 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
 | [schema.sql](schema.sql)、[lib/](lib/)、[functions/](functions/)、[_routes.json](_routes.json)、[test/](test/) | 先に作った、Cloudflare Pages の Functions と D1 で数えて広告を差し込む見本 |
 
 集める項目は、Google Analytics とほぼ同じです。サイト、ページ、題、参照元のホスト、キャンペーン
-(`utm_`)、言語、時間帯、画面の大きさ、ブラウザー、ページを見ていた時間、出来事。受け入れた人の
+(`utm_`)、言語、時間帯、画面の大きさ、ブラウザー、ページを見ていた時間と、どこまで下へ見たか(%)、出来事と、その短い値。受け入れた人の
 分には、Cookie の ID と、訪問(タブ)の ID が付きます。受け入れない人には、どちらの ID も置かず、
 数だけを数えます。
 
@@ -83,7 +83,9 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
    `kaiseki.forget()`)
 4. 会員のサーバーが、サインインのときに、ページから `kaiseki.id()` を受け取り、`/v1/link` に送ります。
    退会のときは `/v1/forget-member` に送ります
-5. 申し込みなど、結果にあたる所で `kaiseki.event("signup")` のように出来事を送ります
+5. 申し込みなど、結果にあたる所で `kaiseki.event("signup")` のように出来事を送ります。検索の言葉の
+   ように値を付けるときは `kaiseki.event("search", {value: "雨"})` とします(100 文字まで)。値には
+   入力された文が入るので、知らせのページに書きます
 6. 関心を出して、案内と広告を選びます。汎用の AI は要りません
    * 関心: 会員や ID ごとに、よく見る地点、季節、分野を SQL で数えます
    * 選び方: 「この地域の地点を見る人には、この協賛」のような決まりで選びます

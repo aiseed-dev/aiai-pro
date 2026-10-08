@@ -98,6 +98,17 @@
     send("/v1/hit", Object.assign(data, extra || {}));
   }
 
+  // How far down the page was seen, 0 to 100
+  let deepest = 0;
+  function seen() {
+    const el = document.documentElement;
+    const h = el.scrollHeight;
+    const p = h > 0 ? Math.round(Math.min(1, (window.scrollY + window.innerHeight) / h) * 100) : 100;
+    if (p > deepest) deepest = p;
+  }
+  window.addEventListener("scroll", seen, { passive: true });
+  seen();
+
   // Time the page was in view, sent when it is hidden or left
   let shown = document.visibilityState === "visible" ? Date.now() : 0;
   let total = 0;
@@ -105,7 +116,7 @@
     if (document.visibilityState === "hidden") {
       if (shown) total += Date.now() - shown;
       shown = 0;
-      if (total > 0) record("leave", { seconds: Math.round(total / 1000) });
+      if (total > 0) record("leave", { seconds: Math.round(total / 1000), scroll: deepest });
       total = 0;
     } else {
       shown = Date.now();
@@ -178,7 +189,10 @@
   window.kaiseki = {
     choose: choose,
     forget: forget,
-    event: function (name, extra) { record(name, extra); },
+    // A short value, such as a search word: kaiseki.event("search", { value: "..." })
+    event: function (name, extra) {
+      record(name, extra && extra.value != null ? { value: String(extra.value).slice(0, 100) } : {});
+    },
     id: function () { return cookie(NAME); },
     to: TO,
   };

@@ -83,6 +83,33 @@ class Kaiseki(unittest.TestCase):
         _, mine, _ = self.call("GET", f"/v1/mine?vid={VID}")
         self.assertEqual([(h["event"], h["seconds"]) for h in mine["hits"]], [("leave", 42), ("signup", None)])
 
+    def test_leave_keeps_how_far_down_and_events_keep_a_short_value(self):
+        self.hit(vid=VID, event="leave", seconds=10, scroll=75)
+        self.hit(vid=VID, event="leave", seconds=10, scroll=150)
+        self.hit(vid=VID, event="search", value="雨 " * 80)
+        self.hit(vid=VID, value="views have no value")
+        _, mine, _ = self.call("GET", f"/v1/mine?vid={VID}")
+        self.assertEqual([(h["scroll"], h["value"]) for h in mine["hits"]],
+                         [(75, ""), (None, ""), (None, ("雨 " * 80)[:100]), (None, "")])
+
+    def test_a_database_made_before_scroll_and_value_gets_the_columns(self):
+        import sqlite3
+        path = os.path.join(self.dir.name, "old.db")
+        old = sqlite3.connect(path)
+        # The table as it was on deb2 before 2026-10-08
+        old.execute("CREATE TABLE hits (ts TEXT NOT NULL, day TEXT NOT NULL, site TEXT NOT NULL, path TEXT NOT NULL, "
+                    "event TEXT NOT NULL, seconds INTEGER, title TEXT NOT NULL, referrer TEXT NOT NULL, "
+                    "utm TEXT NOT NULL, lang TEXT NOT NULL, tz TEXT NOT NULL, screen TEXT NOT NULL, ua TEXT NOT NULL, "
+                    "sid TEXT, vid TEXT)")
+        old.execute("INSERT INTO hits VALUES ('2026-10-07T00:00:00', '2026-10-07', 'weather.time-j.net', '/', 'view', "
+                    "NULL, '', '', '', 'ja', '', '', '', NULL, ?)", (VID,))
+        old.commit()
+        old.close()
+        store = server.Store(path)
+        store.add(server.clean_hit(json.dumps({"site": "weather.time-j.net", "path": "/", "event": "leave",
+                                               "scroll": 40, "vid": VID}), {"weather.time-j.net"}))
+        self.assertEqual([(h["event"], h["scroll"]) for h in store.mine(VID)["hits"]], [("view", None), ("leave", 40)])
+
     def test_link_needs_the_member_systems_token(self):
         self.hit(vid=VID)
         self.assertEqual(self.call("POST", "/v1/link", {"vid": VID, "member": "m1"})[0], 403)
