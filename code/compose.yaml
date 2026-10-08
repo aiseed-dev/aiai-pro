@@ -1,4 +1,4 @@
-# Forgejo for aiai pro, from the official Docker guide. The web port is
+# Forgejo for aiai tools, from the official Docker guide. The web port is
 # bound to 127.0.0.1 and published by Caddy as git.example.jp; SSH is
 # published on 222. Data is owned by USER_UID/USER_GID.
 # Sample only: has not been run yet (2026-09-28).

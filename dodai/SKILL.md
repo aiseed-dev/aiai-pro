@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-dodai
+name: aiai-tools-dodai
 description: 会社のデータの土台を据えるのを手伝う。ふだんは SQLite、何人もが同時に書くときは PostgreSQL(pgvector 入り)、古い SQL Server からは pgloader で移し、集計と分析は DuckDB と Polars でする。
 ---
 

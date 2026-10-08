@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-honnin
+name: aiai-tools-honnin
 description: 民泊(住宅宿泊事業)と簡易宿所(旅館業)の宿泊者の本人確認と宿泊者名簿を、自分のアプリ(PocketBase と画面)で受けるのを手伝う。法令で決まった方法と記載事項に合わせる。
 ---
 

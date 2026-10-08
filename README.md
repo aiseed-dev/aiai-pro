@@ -1,10 +1,10 @@
-# aiai pro
+# aiai tools
 
 AI との協働ツール
 
 事業のための、AI との協働ツールです。会社や団体が、自分たちの IT を AI と一緒に自分で持つための
 スキルを置いています。
-[aiai](https://github.com/aiseed-dev/aiai) が個人と小さな店のための物なのに対し、aiai pro は、認証、コード、文書、
+[aiai](https://github.com/aiseed-dev/aiai) が個人と小さな店のための物なのに対し、aiai tools は、認証、コード、文書、
 メール、会議、API、社内の AI、データ分析、ERP のように、会社が外のサービスに預けている物を、
 OSS と AI で自分の側に置くための物です。
 
@@ -109,7 +109,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
    [aiai](https://github.com/aiseed-dev/aiai) の `website/` のスキルを使うので、aiai も取ります
 
    ```
-   git clone https://github.com/aiseed-dev/aiai-pro.git
+   git clone https://github.com/aiseed-dev/aiai-tools.git
    ```
 
 2. `server/SKILL.md` から順に AI に読ませます。コードと設定は AI が下書きし、コマンドは会社の人が

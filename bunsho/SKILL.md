@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-bunsho
+name: aiai-tools-bunsho
 description: 会社の文書を Office の外に置くのを手伝う。ファイルは自分のサーバーのフォルダーに置き、ブラウザーで一緒に直すときは OnlyOffice Docs を使う。docx と xlsx は、外とやり取りする通り道にして、住む所にしない。
 ---
 
@@ -28,7 +28,7 @@ description: 会社の文書を Office の外に置くのを手伝う。ファ�
 2. 置き場を決めます。サーバーのフォルダーに部署ごとに分け、誰が読めるかをフォルダーで
    決めます。aiseed.dev の「蔵」(aiseed-dev/workspace)は、権限をフォルダーの xattr に持ち、
    認証を PocketBase に任せ、FastAPI で出す形です。公開の版を参照できますが、
-   aiai pro はそれを写しません。会社の AI が、会社の分け方に合わせて作ります
+   aiai tools はそれを写しません。会社の AI が、会社の分け方に合わせて作ります
 3. OnlyOffice Docs を入れます。見本は [compose.yaml](compose.yaml) です。Docs(編集の
    エンジン)だけを入れ、DocSpace は入れません。要る機械は、公式の説明書では CPU 2 コア
    2 GHz、メモリー 4 GB、ディスク 40 GB、スワップ 4 GB 以上です

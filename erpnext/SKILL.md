@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-erpnext
+name: aiai-tools-erpnext
 description: ERP とは何かを伝え、ERPNext(GPL-3.0 の OSS の ERP)を日本語で、自分の PC(Ubuntu)で動かせる環境を、Docker を使わずに作るのを手伝う。MariaDB、conda の環境、bench で組み、一人がすべての画面と設定を触れる形にする。
 ---
 

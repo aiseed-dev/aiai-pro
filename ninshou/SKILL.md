@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-ninshou
+name: aiai-tools-ninshou
 description: 会社の認証を PocketBase に集めるのを手伝う。社員は Apple ID か Google ID でサインインし、自分で作るアプリ(API、画面)はみな PocketBase の札(トークン)で人を確かめる。事業用のアプリの会員(お客さん)のサインインも同じ PocketBase で受ける。OSS の道具(Forgejo、Stalwart など)の認証は別に持つ。最初に、社内に認証を管理できる人がいるかを確かめ、管理者の ID と、ドメイン、外部との接続、区画の分離を点検する。
 ---
 
@@ -27,7 +27,7 @@ description: 会社の認証を PocketBase に集めるのを手伝う。社員�
   Open WebUI の認証は、それぞれの道具が持ちます。1 つにまとめたいときは、
   Forgejo が OpenID Connect の提供者になれます(ただし scope が未実装で、札で何でも
   できることに注意が要ります)。aiseed.dev の自立編には「認証を 1 つに」とありますが、
-  aiai pro では、自分で作るアプリの認証を PocketBase に集める、と読み替えています
+  aiai tools では、自分で作るアプリの認証を PocketBase に集める、と読み替えています
 
 ## 管理できる人がいるか(最初に確かめる)
 
@@ -94,7 +94,7 @@ description: 会社の認証を PocketBase に集めるのを手伝う。社員�
    サーバーに置いて systemd で動かす形です。公式の Docker の画像はありません
    (説明書に「PocketBase doesn't have an official Docker image」とあります)。
    aiseed.dev の例は有志の画像(`ghcr.io/muchobien/pocketbase`)を使っていますが、
-   出どころが公式でないので、aiai pro では実行ファイルを置く形にします
+   出どころが公式でないので、aiai tools では実行ファイルを置く形にします
    * 実行ファイルを GitHub の Releases から取ります。名前、出どころ、大きさを伝えて
      許しを得てからです
    * `/lib/systemd/system/pocketbase.service` を作ります。公式の例では、

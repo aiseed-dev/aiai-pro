@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-mail
+name: aiai-tools-mail
 description: 会社のメールを自分のサーバーの Stalwart に置くのを手伝う。Exchange と Gmail の置き換え。DNS(MX、SPF、DKIM、DMARC、PTR)を整え、imapsync で古いメールを写し、Thunderbird で読む。
 ---
 

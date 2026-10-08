@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-kaigi
+name: aiai-tools-kaigi
 description: 会社の会議と予約を自分のドメインに置くのを手伝う。Jitsi Meet(Teams、Zoom の置き換え)、Cal.diy(Bookings、Calendly の置き換え)、講義には BigBlueButton、カレンダーの同期は Radicale。
 ---
 

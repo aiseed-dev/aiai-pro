@@ -22,7 +22,7 @@ POCKETBASE_URL = os.environ.get("POCKETBASE_URL", "http://127.0.0.1:8090")
 COLLECTION = os.environ.get("POCKETBASE_COLLECTION", "users")
 CACHE_SECONDS = 60
 
-app = FastAPI(title="aiai pro sample API")
+app = FastAPI(title="aiai tools sample API")
 _cache: dict[str, tuple[float, dict]] = {}
 
 

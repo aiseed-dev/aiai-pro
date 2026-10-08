@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 [project]
 name = "aiai_ja"
-authors = [{ name = "aiai pro" }]
-description = "ERPNext を日本語で使うための、訳の追加と修正(aiai pro)"
+authors = [{ name = "aiai tools" }]
+description = "ERPNext を日本語で使うための、訳の追加と修正(aiai tools)"
 requires-python = ">=3.10"
 dynamic = ["version"]
 dependencies = []

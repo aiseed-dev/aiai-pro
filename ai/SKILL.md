@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-ai
+name: aiai-tools-ai
 description: 会社の中に自前の AI を据えるのを手伝う。Ollama で開いた重みのモデルを動かし、AnythingLLM で使い、社内の文書は pgvector で RAG にする。秘密の物は社内で、難しい考えごとと大きなコードの生成は外の大きなモデルで。
 ---
 
@@ -44,7 +44,7 @@ description: 会社の中に自前の AI を据えるのを手伝う。Ollama �
    docker run -d -p 127.0.0.1:3001:3001 --cap-add SYS_ADMIN --add-host=host.docker.internal:host-gateway -v ${STORAGE_LOCATION}:/app/server/storage -v ${STORAGE_LOCATION}/.env:/app/server/.env -e STORAGE_DIR="/app/server/storage" mintplexlabs/anythingllm
    ```
 
-   です(公式は `-p 3001:3001` ですが、aiai pro では 127.0.0.1 に向けて Caddy から
+   です(公式は `-p 3001:3001` ですが、aiai tools では 127.0.0.1 に向けて Caddy から
    `chat.example.jp` で出します)。LLM と埋め込みに Ollama を選び、ベクトルの置き場は
    既定の LanceDB か、[dodai](../dodai/) の PGVector を選びます。複数の人で使うモードにし、
    認証は AnythingLLM 自身が持ちます

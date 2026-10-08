@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-jouhou
+name: aiai-tools-jouhou
 description: 社内の情報を AI が使える形に整えるのを手伝う。紙は OCR で読み、ファイルは 1 か所に集めて分類し、Markdown か adoc に書き起こし、長く勤めた人の知っていることを文章にする。整備が本体で、AI は最後の一手。
 ---
 

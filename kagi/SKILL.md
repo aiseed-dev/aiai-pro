@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-kagi
+name: aiai-tools-kagi
 description: 民泊や小さな宿、事務所の扉に、スマートロック(電気錠)を付け、本人確認が済んだ人にだけ、決めた期間だけ使える鍵(暗証番号など)を自分のアプリから出して消すのを手伝う。Matter と Home Assistant で手元から動かす道と、クラウドの API(RemoteLOCK、SwitchBot、igloohome など)を比べる。Aliro も見ておく。
 ---
 

@@ -1,4 +1,4 @@
-# Stalwart mail server for aiai pro, ports as in the official Docker page.
+# Stalwart mail server for aiai tools, ports as in the official Docker page.
 # Mail ports are published directly (the container must be reachable from
 # outside); the admin UI on 8080 is bound to 127.0.0.1 and published by
 # Caddy. Sample only: has not been run yet (2026-09-28).

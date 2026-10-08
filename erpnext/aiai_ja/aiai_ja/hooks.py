@@ -4,8 +4,8 @@
 # a Japanese site needs. Install it after erpnext and erpnext_jp_core.
 
 app_name = "aiai_ja"
-app_title = "aiai pro 日本語"
-app_publisher = "aiai pro"
+app_title = "aiai tools 日本語"
+app_publisher = "aiai tools"
 app_description = "ERPNext を日本語で使うための、訳の追加と修正"
 app_license = "agpl-3.0"
 

@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# ERPNext in Japanese for aiai pro: the official image, the Noto CJK fonts
+# ERPNext in Japanese for aiai tools: the official image, the Noto CJK fonts
 # for PDFs (fonts-noto-cjk of Debian, OFL-1.1), and erpnext_jp_core from
 # maihatch/erpnext-ja-starter (MIT), which brings a ja.csv translation and
 # a few fields for the invoice system. Clone the starter next to this file,

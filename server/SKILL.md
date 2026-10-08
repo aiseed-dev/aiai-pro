@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-server
+name: aiai-tools-server
 description: 会社が自分の道具を置くサーバーを用意するのを手伝う。Ubuntu と Docker と Caddy を入れ、DNS と HTTPS とファイアウォールとバックアップを決める。後の認証、コード、文書、メール、会議、API、AI は、すべてこのサーバーの上に置く。
 ---
 
@@ -23,7 +23,7 @@ description: 会社が自分の道具を置くサーバーを用意するのを�
 
 ## 手順
 
-1. 何を置くかを聞きます。[aiai-pro の README](../README.md) の表を見せ、最初に置く物を
+1. 何を置くかを聞きます。[aiai-tools の README](../README.md) の表を見せ、最初に置く物を
    1 つか 2 つに絞ります。全部を一度に入れません
 2. サーバーをどこに置くかを聞きます
    * 借りる(VPS): 月に固定の費用で、置く物が増えても人数で増えません。会社の外から

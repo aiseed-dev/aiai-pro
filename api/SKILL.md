@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-api
+name: aiai-tools-api
 description: 会社の基幹の仕事の決まり(業務ロジック)を FastAPI の API に集めるのを手伝う。人は PocketBase の札で確かめ、データは PostgreSQL に置く。古い仕組みと並べて動かし、答えが同じになってから切り替える。
 ---
 

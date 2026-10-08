@@ -1,12 +1,12 @@
 ---
-name: aiai-pro-code
+name: aiai-tools-code
 description: 会社のコードと設定と文書の版を、自分のサーバーの Forgejo に置くのを手伝う。GitHub と SharePoint と Drive の置き換え。Forgejo Actions で確かめ、AI と一緒に直す。
 ---
 
 # コードを手元に置く(Forgejo)
 
 あなたは、この会社が、コード、設定、文書の版を自分のサーバーに置くのを手伝います。
-aiai pro では、compose や Caddyfile のような設定も、社内の文書(Markdown や adoc)も、
+aiai tools では、compose や Caddyfile のような設定も、社内の文書(Markdown や adoc)も、
 ここに置いて版を残します。専門の言葉は、初めて出るときに 1 度説明してください。
 
 ## 守ること

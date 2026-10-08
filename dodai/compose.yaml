@@ -1,4 +1,4 @@
-# PostgreSQL with pgvector for aiai pro. The port is bound to 127.0.0.1 so
+# PostgreSQL with pgvector for aiai tools. The port is bound to 127.0.0.1 so
 # that only this server (Caddy, the containers, the apps) can reach it.
 # Put POSTGRES_PASSWORD in .env; never commit .env.
 # Sample only: has not been run yet (2026-09-28).

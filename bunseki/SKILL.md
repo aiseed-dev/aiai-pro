@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-bunseki
+name: aiai-tools-bunseki
 description: 表のデータから予測のモデルを作り、精度を見て、予測と根拠を出すのを、会社の人と自分の機械でする。Excel で入れて Excel で返す。Polars、scikit-learn、LightGBM、SHAP を使う。外の SaaS にデータを出さない。
 ---
 
@@ -57,7 +57,7 @@ description: 表のデータから予測のモデルを作り、精度を見て�
   Polars(https://github.com/pola-rs/polars、MIT)1.44.2。版は conda-forge(https://anaconda.org/conda-forge/)の物です
 - 市販のサービスの例: AVILEN「AI Seed」(https://avilen.co.jp/dev/saas/ai-seed/)。
   表のデータから 1 クリックでモデルを作り、精度と効いた項目を見せ、予測の根拠を色で示す、
-  という 3 つの段階が書かれています。aiai pro の手順は、この 3 つの段階を OSS でする物です。
+  という 3 つの段階が書かれています。aiai tools の手順は、この 3 つの段階を OSS でする物です。
   aiseed.dev と AVILEN の AI Seed は、名前が似ていますが、別の物です
 
 2026-09-28 に確かめました。

@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-web
+name: aiai-tools-web
 description: 会社の Web サイトを静的なページにして Cloudflare Pages で公開するのを手伝う。作り方は aiai の website のスキルと同じ。Python だけで公開するときは cf-publish、いまの CMS から移すときは aiseed-migration-kit を参照する。
 ---
 
@@ -35,7 +35,7 @@ description: 会社の Web サイトを静的なページにして Cloudflare Pa
      変わったファイルだけを送ります。pip で入れるので、名前と出どころを伝えて許しを得ます
 4. いまの CMS から移すときは、aiseed-migration-kit(aiseed-dev/aiseed-migration-kit、AGPL-3.0)を
    参照します。取り込む(ingest)、分ける(classify)、Markdown にする(convert)、作る(build)、
-   配る(publish)の流れです。変換は下書きで、人が仕上げます。aiai pro はそれを写しません
+   配る(publish)の流れです。変換は下書きで、人が仕上げます。aiai tools はそれを写しません
 5. お問い合わせは、aiai の website のスキルの 8 のとおり、Workers と R2 で受けます。
    名前が要る物は [api](../api/) で受けます
 6. DNS は Cloudflare で会社のドメインにつなぎます。メールのレコード([mail](../mail/))は

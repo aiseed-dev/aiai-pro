@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-renraku
+name: aiai-tools-renraku
 description: 事業用のアプリに、会社と会員のやりとり(問い合わせ、連絡)を入れるのを手伝う。PocketBase のリアルタイムで作る。会員どうしのメッセージを入れると電気通信事業の届出が要ることがあるので、先に伝える。
 ---
 

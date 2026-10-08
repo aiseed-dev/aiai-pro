@@ -1,4 +1,4 @@
-# ERPNext v16 in Japanese for aiai pro, built from the Dockerfile here.
+# ERPNext v16 in Japanese for aiai tools, built from the Dockerfile here.
 # Made after the docker-compose.yml of maihatch/erpnext-ja-starter and the
 # pwd.yml and overrides of frappe/frappe_docker (both MIT). The web port is
 # bound to 127.0.0.1: open http://localhost:8080 on the same PC. Put the

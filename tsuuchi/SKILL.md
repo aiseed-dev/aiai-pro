@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-tsuuchi
+name: aiai-tools-tsuuchi
 description: 事業用のアプリから会員に、取引の通知(招待、予約の確認、案内)をメールと Web Push で届けるのを手伝う。広告は入れない。Gmail と Yahoo の送信者の決まりに合わせる。
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-koukoku
+name: aiai-tools-koukoku
 description: 自分のサイトのアクセス解析と広告を、Google Analytics と AdSense に頼らず、自分のサーバーで持つのを手伝う。Google Analytics と同じ程度の記録を自分のサーバー(analytics.aiseed.dev など)に集め、受け入れた人は Cookie の ID と会員で積み上げ、集計と決まりと機械学習でその人の関心を出し、自社のサービスの案内と、売った協賛の広告に使う。
 ---
 

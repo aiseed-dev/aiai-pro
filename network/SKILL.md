@@ -1,5 +1,5 @@
 ---
-name: aiai-pro-network
+name: aiai-tools-network
 description: 会社や事務所、民泊の建物のネットワークを、ルーターを買わずに Linux の PC 1 台で組むのを手伝う。フレッツ光と光コラボの接続の方式(PPPoE、IPv6 IPoE、DS-Lite、MAP-E)ごとにできることを分け、systemd-networkd、nftables、dnsmasq、Unbound、WireGuard、hostapd で、NAT、ファイアウォール、DHCP、DNS、VLAN、VPN、Wi-Fi を作る。
 ---
 

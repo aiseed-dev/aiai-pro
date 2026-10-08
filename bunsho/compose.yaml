@@ -1,4 +1,4 @@
-# ONLYOFFICE Docs Community Edition for aiai pro. Published by Caddy as
+# ONLYOFFICE Docs Community Edition for aiai tools. Published by Caddy as
 # docs.example.jp. Set JWT_SECRET in .env; without it the secret changes
 # on every restart and integrations break.
 # Sample only: has not been run yet (2026-09-28).
