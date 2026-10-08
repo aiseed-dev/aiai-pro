@@ -1,9 +1,9 @@
 ---
-name: aiai-tools-koukoku
-description: 自分のサイトのアクセス解析と広告を、Google Analytics と AdSense に頼らず、自分のサーバーで持つのを手伝う。Google Analytics と同じ程度の記録を自分のサーバー(analytics.aiseed.dev など)に集め、受け入れた人は Cookie の ID と会員で積み上げ、集計と決まりと機械学習でその人の関心を出し、自社のサービスの案内と、売った協賛の広告に使う。
+name: aiai-tools-kaiseki
+description: 自分のサイトのアクセス解析を、Google Analytics と AdSense に頼らず、自分のサーバーで持つのを手伝う。Google Analytics と同じ程度の記録を自分のサーバー(analytics.aiseed.dev など)に集め、受け入れた人は Cookie の ID と会員で積み上げ、集計と決まりと機械学習でその人の関心を出し、自社のサービスの案内と、売った協賛の広告に使う。
 ---
 
-# 自分で集めて、自分で広告を出す(広告)
+# 自分で集めて、自分のサービスに使う(解析)
 
 あなたは、この会社が、サイトの解析と広告を自分の側で持つのを手伝います。データを Google だけに
 集めず、自分のサーバーに積み上げ、会社の事業の元手にします。使い道は、まず自社のサービス(案内と
@@ -37,10 +37,10 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
 
 | ファイル | 役目 |
 |---|---|
-| [kaiseki/kaiseki.js](kaiseki/kaiseki.js) | ページに置くスクリプト。受け入れるかを聞き、表示、見ていた時間、出来事を送る。自分のサイトどうしのリンクで ID を引き継ぐ |
-| [kaiseki/server.py](kaiseki/server.py) | analytics.aiseed.dev の受け口。標準ライブラリと SQLite。記録、本人が見る・消す、会員とのひもづけ、集計 |
-| [kaiseki/test_server.py](kaiseki/test_server.py) | 受け口の確かめ |
-| [schema.sql](schema.sql)、[lib/](lib/)、[functions/](functions/)、[_routes.json](_routes.json)、[test/](test/) | 先に作った、Cloudflare Pages の Functions と D1 で数えて広告を差し込む見本 |
+| [kaiseki.js](kaiseki.js) | ページに置くスクリプト。受け入れるかを聞き、表示、見ていた時間、出来事を送る。自分のサイトどうしのリンクで ID を引き継ぐ |
+| [server.py](server.py) | analytics.aiseed.dev の受け口。標準ライブラリと SQLite。記録、本人が見る・消す、会員とのひもづけ、集計 |
+| [test_server.py](test_server.py) | 受け口の確かめ |
+| [d1/](d1/) | 先に作った、Cloudflare Pages の Functions と D1 で数えて広告を差し込む見本 |
 
 集める項目は、Google Analytics とほぼ同じです。サイト、ページ、題、参照元のホスト、キャンペーン
 (`utm_`)、言語、時間帯、画面の大きさ、ブラウザー、ページを見ていた時間と、どこまで下へ見たか(%)、出来事と、その短い値。受け入れた人の
@@ -96,7 +96,7 @@ description: 自分のサイトのアクセス解析と広告を、Google Analyt
 8. 確かめます
 
    ```
-   python koukoku/kaiseki/test_server.py
+   python kaiseki/test_server.py
    ```
 
 ## 出典

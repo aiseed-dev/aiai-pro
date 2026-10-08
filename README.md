@@ -100,7 +100,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | [honnin](honnin/) | 本人確認(民泊と簡易宿所の宿泊者名簿が中心) | PocketBase、Jitsi |
 | [kagi](kagi/) | 鍵(スマートロックで期間を決めた鍵を出して消す) | Matter と Home Assistant、各社の API |
 | [kanshi](kanshi/) | 住宅と空き家の VLM 監視と顔認識 | Frigate、Ollama、OpenCV Zoo |
-| [koukoku](koukoku/) | 解析と広告を自分のサーバーで(Google Analytics と同じ程度。ID は受け入れた人だけで、自分のサイトどうしで引き継ぎ、会員とひもづける。関心は集計と決まりで出す) | Python の標準ライブラリと SQLite |
+| [kaiseki](kaiseki/) | 解析を自分のサーバーで(Google Analytics と同じ程度。ID は受け入れた人だけで、自分のサイトどうしで引き継ぎ、会員とひもづける。関心は集計と決まりで出す) | Python の標準ライブラリと SQLite |
 | [network](network/) | Linux の PC をルーターにする | systemd-networkd、nftables、dnsmasq、Unbound、WireGuard、hostapd |
 
 ## 使い方
@@ -119,7 +119,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 ## いまの状態
 
 手順と設定は公式の説明書で確かめた物で、多くはサーバーに入れて動かしてはいません。動かして
-確かめたのは、ERPNext(2026-10-06、[erpnext](erpnext/))と、解析(2026-10-07、[koukoku](koukoku/)。
+確かめたのは、ERPNext(2026-10-06、[erpnext](erpnext/))と、解析(2026-10-07、[kaiseki](kaiseki/)。
 analytics.aiseed.dev で動き、天気のサイト weather.time-j.net で使っています)です。動かした人の
 報告で直します。
 

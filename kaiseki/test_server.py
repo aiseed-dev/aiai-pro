@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""python koukoku/kaiseki/test_server.py  (standard library only)"""
+"""python kaiseki/test_server.py  (standard library only)"""
 
 import json
 import os

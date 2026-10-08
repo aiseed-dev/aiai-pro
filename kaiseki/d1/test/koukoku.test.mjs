@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// node --test koukoku/test/  (Node 24, node:sqlite in place of D1)
+// node --test kaiseki/d1/test/koukoku.test.mjs  (Node 24, node:sqlite in place of D1)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
