@@ -77,6 +77,9 @@ description: 自分のサイトのアクセス解析を、Google Analytics と A
    <script src="/kaiseki.js" data-to="https://analytics.aiseed.dev" data-own="time-j.net aiseed.dev" defer></script>
    ```
 
+   ID を使わないサイトは `data-ask="no"` を付けます。帯を出さず、Cookie の ID も訪問の ID も置かず、
+   表示、見ていた時間、出来事を数だけ送ります。帯の問いの文は `data-ask-text` で替えられます
+
 3. 知らせのページ(`/kaiseki/`)を書きます。送る情報(上の項目と、Cookie の ID と訪問の ID)、
    送り先、目的、自分のサイトどうしで ID を引き継ぐこと、Cookie を受け入れるかを変える方法
    (`kaiseki.choose(true)` と `kaiseki.choose(false)`)、自分の記録を見て消す方法(`/v1/mine` と
