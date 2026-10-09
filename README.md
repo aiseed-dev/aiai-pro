@@ -99,6 +99,7 @@ aiseed.dev の自立編の順です。1 つ終わってから次に進みます�
 | [renraku](renraku/) | メッセージ(会社と会員。会員どうしは届出が要ることがある) | PocketBase |
 | [honnin](honnin/) | 本人確認(民泊と簡易宿所の宿泊者名簿が中心) | PocketBase、Jitsi |
 | [kagi](kagi/) | 鍵(スマートロックで期間を決めた鍵を出して消す) | Matter と Home Assistant、各社の API |
+| [minpaku](minpaku/) | 民泊の受付(受付番号、名簿と顔・身分証、経営者の承認、鍵、偶数月の定期報告。honnin と kagi をつなぐ) | Flet、追記だけの台帳 |
 | [kanshi](kanshi/) | 住宅と空き家の VLM 監視と顔認識 | Frigate、Ollama、OpenCV Zoo |
 | [kaiseki](kaiseki/) | 解析を自分のサーバーで(Google Analytics と同じ程度。ID は受け入れた人だけで、自分のサイトどうしで引き継ぎ、会員とひもづける。関心は集計と決まりで出す) | Python の標準ライブラリと SQLite |
 | [network](network/) | Linux の PC をルーターにする | systemd-networkd、nftables、dnsmasq、Unbound、WireGuard、hostapd |
